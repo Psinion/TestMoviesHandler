@@ -6,6 +6,7 @@ namespace TestMoviesHandler.Models;
 
 public class Movie : Entity
 {
+    [Column(TypeName = "nvarchar(50)")]
     public string Title { get; set; }
 
     public GenreType Genre { get; set; }
