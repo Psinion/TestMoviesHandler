@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TestMoviesHandler.Data;
+using TestMoviesHandler.Data.Models;
 using TestMoviesHandler.Models;
 
 namespace TestMoviesHandler;

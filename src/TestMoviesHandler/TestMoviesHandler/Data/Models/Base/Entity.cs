@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TestMoviesHandler.Models.Base;
+namespace TestMoviesHandler.Data.Models.Base;
 
 public class Entity
 {

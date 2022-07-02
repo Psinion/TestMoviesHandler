@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using TestMoviesHandler.Models.Base;
+using TestMoviesHandler.Data.Models.Base;
 
-namespace TestMoviesHandler.Models;
+namespace TestMoviesHandler.Data.Models;
 
 public class Actor : Entity
 {

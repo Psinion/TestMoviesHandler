@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TestMoviesHandler.Data.Models;
 
-namespace TestMoviesHandler.Models;
+namespace TestMoviesHandler.Data;
 
 public class MoviesDbContext : DbContext
 {

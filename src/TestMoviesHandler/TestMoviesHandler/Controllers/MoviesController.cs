@@ -1,5 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using TestMoviesHandler.Data;
+using TestMoviesHandler.Data.Models;
+using TestMoviesHandler.Data.Repositories;
 using TestMoviesHandler.Models;
 
 namespace TestMoviesHandler.Controllers;
@@ -10,8 +13,11 @@ public class MoviesController : Controller
 {
     private readonly MoviesDbContext context;
 
+    private readonly UnitOfWork unitOfWork;
+
     public MoviesController(MoviesDbContext context)
     {
+        unitOfWork = new UnitOfWork(context);
         this.context = context;
     }
 
@@ -19,15 +25,14 @@ public class MoviesController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
     {
-        return await context.Movies.ToListAsync();
+        return await unitOfWork.MoviesRepository.GetAllAsync();
     }
 
     // GET: Movies/Details/5
     [HttpGet("{Id}")]
     public async Task<ActionResult<Movie>> GetMovie(int id)
     {
-        Movie? movie = await context.Movies
-            .FindAsync(id);
+        Movie? movie = await unitOfWork.MoviesRepository.GetByIdAsync(id);
 
         if (movie == null)
         {
@@ -40,23 +45,7 @@ public class MoviesController : Controller
     [HttpPut("{Id}")]
     public async Task<IActionResult> PutMovie(int id, Movie movie)
     {
-        movie.Id = id;
-
-        context.Entry(movie).State = EntityState.Modified;
-
-        try
-        {
-            await context.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!MovieExists(id))
-            {
-                return NotFound();
-            }
-
-            throw;
-        }
+        await unitOfWork.MoviesRepository.UpdateAsync(movie);
 
         return NoContent();
     }
@@ -67,30 +56,17 @@ public class MoviesController : Controller
     [HttpPost]
     public async Task<ActionResult<Movie>> PostMovie(Movie movie)
     {
-        context.Movies.Add(movie);
-        await context.SaveChangesAsync();
+        await unitOfWork.MoviesRepository.AddAsync(movie);
 
         return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
     }
 
     // GET: Movies/Delete/5
     [HttpDelete("{id}")]
-    public async Task<ActionResult<Movie>> DeleteMovie(int id)
+    public async Task<IActionResult> DeleteMovie(int id)
     {
-        var movie = await context.Movies.FindAsync(id);
-        if (movie == null)
-        {
-            return NotFound();
-        }
+        await unitOfWork.MoviesRepository.RemoveAsync(id);
 
-        context.Movies.Remove(movie);
-        await context.SaveChangesAsync();
-
-        return movie;
-    }
-
-    private bool MovieExists(int id)
-    {
-        return (context.Movies?.Any(e => e.Id == id)).GetValueOrDefault();
+        return NoContent();
     }
 }

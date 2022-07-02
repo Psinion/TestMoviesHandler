@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
-using TestMoviesHandler.Models.Base;
+using TestMoviesHandler.Data.Models.Base;
 using TestMoviesHandler.Models.Enums;
 
-namespace TestMoviesHandler.Models;
+namespace TestMoviesHandler.Data.Models;
 
 public class Movie : Entity
 {
