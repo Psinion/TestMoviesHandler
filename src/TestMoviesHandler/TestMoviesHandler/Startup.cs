@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TestMoviesHandler.Data;
-using TestMoviesHandler.Data.Models;
-using TestMoviesHandler.Models;
 
 namespace TestMoviesHandler;
 
@@ -21,6 +19,16 @@ public class Startup
         services.AddDbContext<MoviesDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
         );
+
+        services.AddCors(options =>
+        {
+            var clientUrl = Configuration.GetValue<string>("ClientUrl");
+
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.WithOrigins(clientUrl).AllowAnyMethod().AllowAnyHeader();
+            });
+        });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -31,6 +39,8 @@ public class Startup
         }
 
         app.UseRouting();
+
+        app.UseCors();
 
         app.UseAuthorization();
 

@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TestMoviesHandler.Data;
 using TestMoviesHandler.Data.Models;
 using TestMoviesHandler.Data.Repositories;
-using TestMoviesHandler.Models;
 
 namespace TestMoviesHandler.Controllers;
 
@@ -12,7 +10,6 @@ namespace TestMoviesHandler.Controllers;
 public class MoviesController : Controller
 {
     private readonly MoviesDbContext context;
-
     private readonly UnitOfWork unitOfWork;
 
     public MoviesController(MoviesDbContext context)
