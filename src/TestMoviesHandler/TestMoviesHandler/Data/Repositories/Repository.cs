@@ -27,7 +27,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, 
     {
         if(item is null) throw new ArgumentNullException(nameof(item));
 
-        context.Entry(item).State = EntityState.Added;
+        context.Add(item);
         context.SaveChanges();
 
         return item;
@@ -37,7 +37,7 @@ public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, 
     {
         if (item is null) throw new ArgumentNullException(nameof(item));
 
-        context.Entry(item).State = EntityState.Added;
+        await context.AddAsync(item);
         await context.SaveChangesAsync();
 
         return item;

@@ -2,6 +2,7 @@
 using TestMoviesHandler.Data;
 using TestMoviesHandler.Data.Models;
 using TestMoviesHandler.Data.Repositories;
+using TestMoviesHandler.Models;
 
 namespace TestMoviesHandler.Controllers;
 
@@ -9,8 +10,8 @@ namespace TestMoviesHandler.Controllers;
 [ApiController]
 public class MoviesController : Controller
 {
-    private readonly MoviesDbContext context;
     private readonly UnitOfWork unitOfWork;
+    private MoviesDbContext context;
 
     public MoviesController(MoviesDbContext context)
     {
@@ -18,7 +19,7 @@ public class MoviesController : Controller
         this.context = context;
     }
 
-    // GET: Movies
+    // GET: api/movies
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
     {
@@ -51,9 +52,28 @@ public class MoviesController : Controller
     // To protect from overposting attacks, enable the specific properties you want to bind to.
     // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
     [HttpPost]
-    public async Task<ActionResult<Movie>> PostMovie(Movie movie)
+    public async Task<ActionResult<MovieCreateDto>> PostMovie(MovieCreateDto movieDto)
     {
-        await unitOfWork.MoviesRepository.AddAsync(movie);
+        Movie movie = new Movie()
+        {
+            Title = movieDto.Title,
+            Genre = movieDto.Genre
+        };
+
+        List<Actor> actors = new List<Actor>();
+        foreach (var actorId in movieDto.ActorsId)
+        {
+            Actor actor = await context.Actors.FindAsync(actorId);
+            if (actor != null)
+            {
+                actor.Movies.Add(movie);
+                actors.Add(actor);
+            }
+        }
+
+        movie.Actors = actors;
+        context.Movies.Update(movie); //unitOfWork.MoviesRepository.AddAsync(movie);
+        await context.SaveChangesAsync();
 
         return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
     }

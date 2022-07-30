@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
 using TestMoviesHandler.Data;
 
 namespace TestMoviesHandler;
@@ -32,6 +33,14 @@ public class Startup
                     .AllowAnyHeader();
             });
         });
+
+        services.AddControllersWithViews()
+            .AddJsonOptions(options =>
+            {
+                options
+                    .JsonSerializerOptions
+                    .ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
