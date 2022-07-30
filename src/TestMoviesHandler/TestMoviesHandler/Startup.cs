@@ -26,7 +26,10 @@ public class Startup
 
             options.AddDefaultPolicy(builder =>
             {
-                builder.WithOrigins(clientUrl).AllowAnyMethod().AllowAnyHeader();
+                builder
+                    .WithOrigins(clientUrl)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader();
             });
         });
     }

@@ -1,44 +1,43 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
-    Button,
-    Card, Container, ListGroup,
+    Container,
 } from "react-bootstrap";
+import MovieItem from "./MovieItem";
 
 const MoviesTable = function() {
+    const [movies, setMovies] = useState([]);
+
+    useEffect(() => {
+            getMovies();
+        }, []
+    )
+
+    function getMovies() {
+        const url = 'https://localhost:7268/api/movies';
+
+        fetch(url, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(movies => {
+                console.log(movies);
+                setMovies(movies)
+            })
+            .catch(error => {
+                console.log(error);
+                alert(error);
+            });
+    }
 
     return (
-        <Container>
-            <Card>
-                <Card.Header as="h5">Featured</Card.Header>
-                <Card.Body>
-                    <Card.Title>Special title treatment</Card.Title>
-                    <Card.Text>
-                        With supporting text below as a natural lead-in to additional content.
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-            </Card>
-            <Card>
-                <Card.Header as="h5">Featured</Card.Header>
-                <Card.Body>
-                    <Card.Title>Special title treatment</Card.Title>
-                    <Card.Text>
-                        With supporting text below as a natural lead-in to additional content.
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-            </Card>
-            <Card>
-                <Card.Header as="h5">Featured</Card.Header>
-                <Card.Body>
-                    <Card.Title>Special title treatment</Card.Title>
-                    <Card.Text>
-                        With supporting text below as a natural lead-in to additional content.
-                    </Card.Text>
-                    <Button variant="primary">Go somewhere</Button>
-                </Card.Body>
-            </Card>
-        </Container>
+
+        <div>
+            <Container>
+                {movies.map(movie =>
+                    <MovieItem key='movie.id' data={movie}></MovieItem>
+                )}
+            </Container>
+        </div>
     )
 }
 export default MoviesTable;
