@@ -1,9 +1,10 @@
 import React from 'react';
 import {Button, Card} from "react-bootstrap";
+import classes from '../styles/Movies.css';
 
 const MovieItem = (props) => {
     return (
-        <Card>
+        <Card className="movie-item">
             <Card.Header as="h5">{props.data.title}</Card.Header>
             <Card.Body>
                 <Card.Title>Special title treatment</Card.Title>
