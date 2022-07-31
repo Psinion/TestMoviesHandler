@@ -5,13 +5,14 @@ import {
 import MovieItem from "./MovieItem";
 import React from 'react';
 import {Link} from "react-router-dom";
+import "../styles/App.css"
 
 const MoviesTable = function(props) {
     const { movies } = props;
 
     return (
-        <Container>
-            <div style={{marginTop: '10px'}}>
+        <Container className="content">
+            <div>
                 <div>
                     <Link to="/create-movie">
                         <Button variant="outline-success">Create Movie</Button>

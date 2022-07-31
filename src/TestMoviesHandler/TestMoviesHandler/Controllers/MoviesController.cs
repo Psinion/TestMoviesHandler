@@ -63,7 +63,7 @@ public class MoviesController : Controller
         List<Actor> actors = new List<Actor>();
         foreach (var actorId in movieDto.ActorsId)
         {
-            Actor actor = await context.Actors.FindAsync(actorId);
+            Actor actor = await unitOfWork.ActorsRepository.GetByIdAsync(actorId);
             if (actor != null)
             {
                 actor.Movies.Add(movie);
@@ -72,8 +72,7 @@ public class MoviesController : Controller
         }
 
         movie.Actors = actors;
-        context.Movies.Update(movie); //unitOfWork.MoviesRepository.AddAsync(movie);
-        await context.SaveChangesAsync();
+        await unitOfWork.MoviesRepository.AddAsync(movie);
 
         return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
     }
