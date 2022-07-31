@@ -5,11 +5,25 @@ import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
 import "../styles/App.css"
 import GenreSelect from "../components/forms/selectors/GenreSelect";
 import Actions from "../services/actions";
-import MovieItem from "../components/MovieItem";
 
 const CreateMoviePage = () => {
 
+    const initialMovieForm = Object.freeze({
+            title: "",
+            genre: 0
+        });
+
     const [actors, setActors] = useState([]);
+
+    const [movieForm, setMovieForm] = useState(initialMovieForm);
+    const [selectedActors, setSelectedActors] = useState([]);
+
+    const handleChange = (x) => {
+        setMovieForm({
+            ...movieForm,
+            [x.target.name]: x.target.value,
+        });
+    }
 
     useEffect(() => {
             getActors();
@@ -33,6 +47,53 @@ const CreateMoviePage = () => {
             });
     }
 
+    function selectActor(actor) {
+        if(!selectedActors.includes(actor)) {
+            setSelectedActors([...selectedActors, actor]);
+        }
+    }
+
+    function unselectActor(actor) {
+        let list = [...selectedActors];
+        let index = list.indexOf(actor);
+        if(index !== -1) {
+            list.splice(index, 1);
+            setSelectedActors(list);
+        }
+    }
+
+    function submit() {
+
+        let idList = [];
+        selectedActors.forEach(x => {
+            idList.push(x.id)
+        });
+
+        const movie = {
+            title: movieForm.title,
+            genre: Number(movieForm.genre),
+            actorsId: idList
+        }
+
+        console.log(movie);
+
+        fetch(Actions.API_URL_POST_MOVIE, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(movie)
+            })
+            .then(response => response.json())
+            .then(requestData => {
+               console.log(requestData)
+            })
+            .catch((error) => {
+                console.log(error);
+                alert(error);
+            })
+        ;
+    }
 
     return (
         <div>
@@ -41,14 +102,17 @@ const CreateMoviePage = () => {
             <Container className="content">
                 <Form>
                     <Row>
+                        <Button variant="outline-success" onClick={submit}>Submit</Button>
+                    </Row>
+                    <Row>
                         <Form.Group as={Col}>
                             <Form.Label>Title</Form.Label>
-                            <Form.Control placeholder="Enter title"></Form.Control>
+                            <Form.Control name="title" value={movieForm.title} placeholder="Enter title" onChange={handleChange}/>
                         </Form.Group>
 
                         <Form.Group as={Col}>
                             <Form.Label>Genre</Form.Label>
-                            <GenreSelect></GenreSelect>
+                            <GenreSelect name="genre" value={movieForm.genre} onChange={handleChange}/>
                         </Form.Group>
                     </Row>
                     <Row>
@@ -80,7 +144,7 @@ const CreateMoviePage = () => {
                                         <th>{actor.name}</th>
                                         <th>{actor.surname}</th>
                                         <th>
-                                            <Button variant="outline-success">Select</Button>
+                                            <Button variant="outline-success" onClick={() => selectActor(actor)}>Select</Button>
                                         </th>
                                     </tr>
                                 )}
@@ -97,6 +161,15 @@ const CreateMoviePage = () => {
                                 </tr>
                                 </thead>
                                 <tbody>
+                                    {selectedActors.map(actor =>
+                                        <tr key={actor.id}>
+                                            <th>{actor.name}</th>
+                                            <th>{actor.surname}</th>
+                                            <th>
+                                                <Button variant="outline-success" onClick={() => unselectActor(actor)}>Unselect</Button>
+                                            </th>
+                                        </tr>
+                                    )}
                                 </tbody>
                             </Table>
                         </Col>
