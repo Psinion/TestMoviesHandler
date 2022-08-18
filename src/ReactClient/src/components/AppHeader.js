@@ -17,12 +17,12 @@ const AppHeader = function() {
                         </LinkContainer>
                     </Nav>
                 </Navbar.Collapse>
-                <Navbar.Collapse className="justify-content-end">
+                {/*<Navbar.Collapse className="justify-content-end">
                     <Form className="d-flex">
                         <Form.Control type="text" placeholder="Type movie name" className="me-2" />
                         <Button variant="outline-success">Search</Button>
                     </Form>
-                </Navbar.Collapse>
+                </Navbar.Collapse>*/}
             </Container>
         </Navbar>
     )

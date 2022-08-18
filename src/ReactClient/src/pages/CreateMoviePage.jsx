@@ -98,12 +98,11 @@ const CreateMoviePage = () => {
     return (
         <div>
             <AppHeader/>
-
             <Container className="content">
                 <Form>
-                    <Row>
-                        <Button variant="outline-success" onClick={submit}>Submit</Button>
-                    </Row>
+                    <div>
+                        <Button variant="outline-success" onClick={submit} style={{width:"100px"}}>Submit</Button>
+                    </div>
                     <Row>
                         <Form.Group as={Col}>
                             <Form.Label>Title</Form.Label>
