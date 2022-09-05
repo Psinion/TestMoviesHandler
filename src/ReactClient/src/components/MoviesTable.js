@@ -27,10 +27,17 @@ const MoviesTable = function(props) {
                         </Link>
                     </Col>
                     <Col>
-                        <Form className="d-flex">
-                            <Form.Control type="text" value={dynamicFilter} onChange={event => setDynamicFilter(event.target.value)} placeholder="Enter movie name" className="me-2" />
+                        <div className="d-flex">
+                            <Form.Control type="text" value={dynamicFilter}
+                                          onChange={event => setDynamicFilter(event.target.value)}
+                                          onKeyPress={event => {
+                                              if(event.key === "Enter") {
+                                                  filterMovies(dynamicFilter)
+                                              }
+                                          }}
+                                          placeholder="Enter movie name" className="me-2" on/>
                             <Button onClick={() => filterMovies(dynamicFilter)} variant="outline-success">Search</Button>
-                        </Form>
+                        </div>
                     </Col>
                 </Row>
                 <div>
