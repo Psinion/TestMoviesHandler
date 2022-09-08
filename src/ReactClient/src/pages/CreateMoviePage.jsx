@@ -9,9 +9,10 @@ import Actions from "../services/actions";
 const CreateMoviePage = () => {
 
     const initialMovieForm = Object.freeze({
-            title: "",
-            genre: 0
-        });
+        title: "",
+        genre: 0,
+        description: ""
+    });
 
     const [actors, setActors] = useState([]);
 
@@ -71,6 +72,7 @@ const CreateMoviePage = () => {
 
         const movie = {
             title: movieForm.title,
+            description: movieForm.description,
             genre: Number(movieForm.genre),
             actorsId: idList
         }
@@ -112,6 +114,12 @@ const CreateMoviePage = () => {
                         <Form.Group as={Col}>
                             <Form.Label>Genre</Form.Label>
                             <GenreSelect name="genre" value={movieForm.genre} onChange={handleChange}/>
+                        </Form.Group>
+                    </Row>
+                    <Row>
+                        <Form.Group>
+                            <Form.Label>Description</Form.Label>
+                            <Form.Control  as="textarea" name="description" value={movieForm.description} placeholder="Enter description" onChange={handleChange}/>
                         </Form.Group>
                     </Row>
                     <Row>

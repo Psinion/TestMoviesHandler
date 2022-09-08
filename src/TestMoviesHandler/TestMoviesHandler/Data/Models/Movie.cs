@@ -9,6 +9,9 @@ public class Movie : Entity
     [Column(TypeName = "nvarchar(50)")]
     public string Title { get; set; }
 
+    [Column(TypeName = "nvarchar(MAX)")]
+    public string Description { get; set; }
+
     public GenreType Genre { get; set; }
 
     public IList<Actor> Actors { get; set; }

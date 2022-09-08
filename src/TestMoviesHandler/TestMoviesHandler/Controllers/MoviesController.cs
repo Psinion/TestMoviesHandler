@@ -57,6 +57,7 @@ public class MoviesController : Controller
         Movie movie = new Movie()
         {
             Title = movieDto.Title,
+            Description = movieDto.Description,
             Genre = movieDto.Genre
         };
 

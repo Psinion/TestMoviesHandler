@@ -10,6 +10,8 @@ namespace TestMoviesHandler.Models
     {
         public string Title { get; set; }
 
+        public string Description { get; set; }
+
         public GenreType Genre { get; set; }
 
         public IList<int> ActorsId { get; set; }
