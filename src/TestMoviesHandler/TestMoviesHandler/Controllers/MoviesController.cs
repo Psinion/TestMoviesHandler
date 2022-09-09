@@ -23,7 +23,7 @@ public class MoviesController : Controller
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Movie>>> GetMovies()
     {
-        return await unitOfWork.MoviesRepository.GetAllAsync();
+        return await unitOfWork.MoviesRepository.GetAllWithActorsAsync();
     }
 
     // GET: Movies/Details/5

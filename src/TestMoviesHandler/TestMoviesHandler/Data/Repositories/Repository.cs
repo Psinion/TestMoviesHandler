@@ -6,8 +6,8 @@ namespace TestMoviesHandler.Data.Repositories;
 
 public class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity, new()
 {
-    private readonly MoviesDbContext context;
-    private readonly DbSet<TEntity> dbSet;
+    protected readonly MoviesDbContext context;
+    protected readonly DbSet<TEntity> dbSet;
 
     public Repository(MoviesDbContext context)
     {

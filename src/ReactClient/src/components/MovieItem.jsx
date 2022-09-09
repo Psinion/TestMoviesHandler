@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Card} from "react-bootstrap";
+import {Card, ListGroup, Nav} from "react-bootstrap";
 import '../styles/Movies.css';
 
 const MovieItem = (props) => {
@@ -13,6 +13,12 @@ const MovieItem = (props) => {
                 {/*<Card.Title>Special title treatment</Card.Title>
                 <Button variant="primary">Go somewhere</Button>*/}
             </Card.Body>
+            <ListGroup horizontal className="list-group-flush">
+                <ListGroup.Item><b>Actors:</b></ListGroup.Item>
+                {props.data.actors != null && props.data.actors.map(actor =>
+                    <ListGroup.Item key={actor.id}>{actor.name + " " + actor.surname}</ListGroup.Item>
+                )}
+            </ListGroup>
         </Card>
     );
 };
