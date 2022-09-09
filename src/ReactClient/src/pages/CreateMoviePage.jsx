@@ -5,26 +5,26 @@ import {Button, Col, Container, Form, Row, Table} from "react-bootstrap";
 import "../styles/App.css"
 import GenreSelect from "../components/forms/selectors/GenreSelect";
 import Actions from "../services/actions";
+import useForm from "../hooks/useForm";
 
 const CreateMoviePage = () => {
-
     const initialMovieForm = Object.freeze({
         title: "",
         genre: 0,
         description: ""
     });
 
+    const {
+        values,
+        setValues,
+        errors,
+        setErrors,
+        handleInputChange
+    } = useForm(initialMovieForm);
+
     const [actors, setActors] = useState([]);
 
-    const [movieForm, setMovieForm] = useState(initialMovieForm);
     const [selectedActors, setSelectedActors] = useState([]);
-
-    const handleChange = (x) => {
-        setMovieForm({
-            ...movieForm,
-            [x.target.name]: x.target.value,
-        });
-    }
 
     useEffect(() => {
             getActors();
@@ -63,7 +63,25 @@ const CreateMoviePage = () => {
         }
     }
 
-    function submit() {
+    const validate = () => {
+        const {title, genre, description} = values;
+        let temp = {};
+
+        if(title == "") temp.title = 'Required field.'
+        else if(title.length > 50) temp.title = "Title is too long."
+        else temp.title = "";
+
+        setErrors(temp);
+        return Object.values(temp).every(x => x == "");
+    }
+
+    function submit(e) {
+        e.preventDefault();
+
+        if(!validate()) {
+            e.stopPropagation();
+            return;
+        }
 
         let idList = [];
         selectedActors.forEach(x => {
@@ -71,9 +89,9 @@ const CreateMoviePage = () => {
         });
 
         const movie = {
-            title: movieForm.title,
-            description: movieForm.description,
-            genre: Number(movieForm.genre),
+            title: values.title,
+            description: values.description,
+            genre: Number(values.genre),
             actorsId: idList
         }
 
@@ -93,33 +111,36 @@ const CreateMoviePage = () => {
             .catch((error) => {
                 console.log(error);
                 alert(error);
-            })
-        ;
+            });
+
+        setValues(initialMovieForm);
+        setSelectedActors([]);
     }
 
     return (
         <div>
             <AppHeader/>
             <Container className="content">
-                <Form>
+                <Form noValidate onSubmit={submit}>
                     <div>
-                        <Button variant="outline-success" onClick={submit} style={{width:"100px"}}>Submit</Button>
+                        <Button variant="outline-success" type="submit" style={{width:"100px"}}>Submit</Button>
                     </div>
                     <Row>
                         <Form.Group as={Col}>
                             <Form.Label>Title</Form.Label>
-                            <Form.Control name="title" value={movieForm.title} placeholder="Enter title" onChange={handleChange}/>
+                            <Form.Control type="text" name="title" value={values.title} placeholder="Enter title" onChange={handleInputChange} isInvalid={errors.title}/>
+                            <Form.Control.Feedback type="invalid">{errors.title}</Form.Control.Feedback>
                         </Form.Group>
 
                         <Form.Group as={Col}>
                             <Form.Label>Genre</Form.Label>
-                            <GenreSelect name="genre" value={movieForm.genre} onChange={handleChange}/>
+                            <GenreSelect name="genre" value={values.genre} onChange={handleInputChange}/>
                         </Form.Group>
                     </Row>
                     <Row>
                         <Form.Group>
                             <Form.Label>Description</Form.Label>
-                            <Form.Control  as="textarea" name="description" value={movieForm.description} placeholder="Enter description" onChange={handleChange}/>
+                            <Form.Control  as="textarea" name="description" value={values.description} placeholder="Enter description" onChange={handleInputChange}/>
                         </Form.Group>
                     </Row>
                     <Row>
