@@ -35,7 +35,7 @@ const MoviesTable = function(props) {
                                                   filterMovies(dynamicFilter)
                                               }
                                           }}
-                                          placeholder="Enter movie name" className="me-2" on/>
+                                          placeholder="Enter movie name" className="me-2"/>
                             <Button onClick={() => filterMovies(dynamicFilter)} variant="outline-success">Search</Button>
                         </div>
                     </Col>
