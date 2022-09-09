@@ -13,12 +13,15 @@ const MovieItem = (props) => {
                 {/*<Card.Title>Special title treatment</Card.Title>
                 <Button variant="primary">Go somewhere</Button>*/}
             </Card.Body>
-            <ListGroup horizontal className="list-group-flush">
-                <ListGroup.Item><b>Actors:</b></ListGroup.Item>
-                {props.data.actors != null && props.data.actors.map(actor =>
-                    <ListGroup.Item key={actor.id}>{actor.name + " " + actor.surname}</ListGroup.Item>
-                )}
-            </ListGroup>
+            {
+                props.data.actors != null && props.data.actors.length > 0 &&
+                <ListGroup horizontal className="list-group-flush">
+                    <ListGroup.Item><b>Actors:</b></ListGroup.Item>
+                    {props.data.actors.map(actor =>
+                        <ListGroup.Item key={actor.id}>{actor.name + " " + actor.surname}</ListGroup.Item>
+                    )}
+                </ListGroup>
+            }
         </Card>
     );
 };
