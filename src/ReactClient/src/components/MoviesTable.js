@@ -7,8 +7,7 @@ import React, {useState} from 'react';
 import {Link} from "react-router-dom";
 import "../styles/App.css"
 
-const MoviesTable = function(props) {
-    const { movies } = props;
+const MoviesTable = function({movies, movieDelete}) {
 
     const [dynamicFilter, setDynamicFilter] = useState('')
     const [staticFilter, setStaticFilter] = useState('');
@@ -50,7 +49,7 @@ const MoviesTable = function(props) {
                         }
                     })
                         .map(movie =>
-                        <MovieItem key={movie.id} data={movie}/>
+                        <MovieItem key={movie.id} data={movie} onDelete={movieDelete}/>
                     )}
                 </div>
             </div>

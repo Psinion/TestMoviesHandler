@@ -30,10 +30,32 @@ function MoviesPage() {
             });
     }
 
+    function movieDelete(id) {
+        fetch(Actions.API_URL_DELETE_MOVIE + id, {
+            method: 'DELETE'
+        })
+            .catch(error => {
+                console.log(error);
+                alert(error);
+            });
+
+        const moviesCopy = [...movies];
+        const index = moviesCopy.findIndex(movie => {
+            if(movie.id === id) {
+                return true;
+            }
+        });
+
+        if(index !== -1) {
+            moviesCopy.splice(index, 1);
+            setMovies(moviesCopy);
+        }
+    }
+
     return (
         <>
             <AppHeader/>
-            <MoviesTable movies={movies}/>
+            <MoviesTable movies={movies} movieDelete={movieDelete}/>
             <AppFooter/>
         </>
     );
