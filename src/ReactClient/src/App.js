@@ -11,6 +11,7 @@ function App() {
           <Routes>
               <Route path="/movies" element={<MoviesPage/>}/>
               <Route path="/create-movie" element={<CreateMoviePage/>}/>
+              <Route path="/change-movie/:movieId" element={<CreateMoviePage/>}/>
               <Route path="*" element={<MoviesPage/>} />
           </Routes>
       </BrowserRouter>

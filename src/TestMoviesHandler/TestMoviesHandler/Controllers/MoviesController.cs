@@ -30,7 +30,7 @@ public class MoviesController : Controller
     [HttpGet("{Id}")]
     public async Task<ActionResult<Movie>> GetMovie(int id)
     {
-        Movie? movie = await unitOfWork.MoviesRepository.GetByIdAsync(id);
+        Movie? movie = await unitOfWork.MoviesRepository.GetByIdWithActorsAsync(id);
 
         if (movie == null)
         {

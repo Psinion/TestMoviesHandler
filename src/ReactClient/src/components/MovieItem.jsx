@@ -1,7 +1,7 @@
 import React from 'react';
-import {Button, Card, ListGroup, Nav, Stack} from "react-bootstrap";
+import {Button, Card, ListGroup, Stack} from "react-bootstrap";
 import '../styles/Movies.css';
-import Actions from "../services/actions";
+import {Link} from "react-router-dom";
 
 const MovieItem = ({data, onDelete}) => {
 
@@ -27,7 +27,9 @@ const MovieItem = ({data, onDelete}) => {
             }
             <Card.Body>
                 <Stack direction="horizontal" gap="2">
-                    <Button variant="primary" disabled >Change</Button>
+                    <Link className="" to={"/change-movie/" + data.id}>
+                        <Button variant="primary">Change</Button>
+                    </Link>
                     <Button variant="primary" onClick={() => onDelete(data.id)}>Remove</Button>
                 </Stack>
             </Card.Body>

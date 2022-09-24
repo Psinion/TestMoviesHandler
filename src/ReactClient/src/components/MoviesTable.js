@@ -34,7 +34,7 @@ const MoviesTable = function() {
             });
     }
 
-    function movieDelete(id) {
+    function deleteMovie(id) {
         fetch(Actions.API_URL_DELETE_MOVIE + id, {
             method: 'DELETE'
         })
@@ -54,6 +54,10 @@ const MoviesTable = function() {
             moviesCopy.splice(index, 1);
             setMovies(moviesCopy);
         }
+    }
+
+    function changeMovie(id) {
+
     }
 
     const [dynamicFilter, setDynamicFilter] = useState('')
@@ -96,7 +100,7 @@ const MoviesTable = function() {
                         }
                     })
                         .map(movie =>
-                        <MovieItem key={movie.id} data={movie} onDelete={movieDelete}/>
+                        <MovieItem key={movie.id} data={movie} onDelete={deleteMovie}/>
                     )}
                 </div>
             </div>

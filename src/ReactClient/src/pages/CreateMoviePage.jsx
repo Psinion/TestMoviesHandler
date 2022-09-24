@@ -6,6 +6,7 @@ import "../styles/App.css"
 import GenreSelect from "../components/forms/selectors/GenreSelect";
 import Actions from "../services/actions";
 import useForm from "../hooks/useForm";
+import {useParams} from "react-router-dom";
 
 const CreateMoviePage = () => {
     const initialMovieForm = Object.freeze({
@@ -23,24 +24,49 @@ const CreateMoviePage = () => {
     } = useForm(initialMovieForm);
 
     const [actors, setActors] = useState([]);
+    const { movieId } = useParams();
 
     const [selectedActors, setSelectedActors] = useState([]);
 
     useEffect(() => {
+            getMovieData(movieId);
             getActors();
         }, []
     )
 
+    function getMovieData(id) {
+        if(!id) {
+            return;
+        }
+
+        const url = Actions.API_URL_GET_MOVIE;
+        fetch(url + '/' + id, {
+            method: 'GET'
+        })
+            .then(response => response.json())
+            .then(movie => {
+                console.log(movie);
+                setMovieData(movie);
+            })
+            .catch(error => {
+                console.log(error);
+                alert(error);
+            });
+    }
+
+    function setMovieData(movie) {
+        setValues(movie);
+    }
+
     function getActors() {
         const url = Actions.API_URL_FETCH_ACTORS;
-
         fetch(url, {
             method: 'GET'
         })
             .then(response => response.json())
             .then(actors => {
                 console.log(actors);
-                setActors(actors)
+                setActors(actors);
             })
             .catch(error => {
                 console.log(error);
