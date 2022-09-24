@@ -56,6 +56,7 @@ public class MoviesController : Controller
     {
         Movie movie = new Movie()
         {
+            Id = movieDto.Id,
             Title = movieDto.Title,
             Description = movieDto.Description,
             Genre = movieDto.Genre
@@ -73,7 +74,14 @@ public class MoviesController : Controller
         }
 
         movie.Actors = actors;
-        await unitOfWork.MoviesRepository.AddAsync(movie);
+        if (movie.Id == 0)
+        {
+            await unitOfWork.MoviesRepository.AddAsync(movie);
+        }
+        else
+        {
+            await unitOfWork.MoviesRepository.UpdateAsync(movie);
+        }
 
         return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
     }

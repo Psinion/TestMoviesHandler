@@ -10,6 +10,7 @@ import {useParams} from "react-router-dom";
 
 const CreateMoviePage = () => {
     const initialMovieForm = Object.freeze({
+        id: 0,
         title: "",
         genre: 0,
         description: ""
@@ -115,6 +116,7 @@ const CreateMoviePage = () => {
         });
 
         const movie = {
+            id: values.id,
             title: values.title,
             description: values.description,
             genre: Number(values.genre),

@@ -8,6 +8,8 @@ namespace TestMoviesHandler.Models
     /// </summary>
     public class MovieCreateDto : BaseDto
     {
+        public int Id { get; set; }
+
         public string Title { get; set; }
 
         public string Description { get; set; }
