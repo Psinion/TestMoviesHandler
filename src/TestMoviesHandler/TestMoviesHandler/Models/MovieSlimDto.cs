@@ -3,10 +3,7 @@ using TestMoviesHandler.Models.Enums;
 
 namespace TestMoviesHandler.Models;
 
-/// <summary>
-/// Data Transfer Object for movie creation.
-/// </summary>
-public class MovieCreateDto : BaseDto
+public class MovieSlimDto : BaseDto
 {
     public int Id { get; set; }
 
@@ -16,5 +13,5 @@ public class MovieCreateDto : BaseDto
 
     public GenreType Genre { get; set; }
 
-    public IList<int> ActorsId { get; set; }
+    public IList<ActorSlimDto> Actors { get; set; }
 }

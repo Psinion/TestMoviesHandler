@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using TestMoviesHandler.Data;
 using TestMoviesHandler.Data.Models;
 using TestMoviesHandler.Data.Repositories;
@@ -40,6 +41,40 @@ public class MoviesController : Controller
         return movie;
     }
 
+    [HttpGet("get_slim_movie/{Id}")]
+    public async Task<ActionResult<MovieSlimDto>> GetSlimMovie(int id)
+    {
+        Movie? movie = await unitOfWork.MoviesRepository.GetByIdWithActorsAsync(id);
+
+        if (movie == null)
+        {
+            return NotFound();
+        }
+
+        List<ActorSlimDto> actorsDto = new List<ActorSlimDto>(movie.Actors.Count);
+
+        foreach (var actor in movie.Actors)
+        {
+            actorsDto.Add(new ActorSlimDto()
+            {
+                Id = actor.Id,
+                Name = actor.Name,
+                Surname = actor.Surname
+            });
+        }
+
+        MovieSlimDto movieDto = new MovieSlimDto()
+        {
+            Id = movie.Id,
+            Description = movie.Description,
+            Genre = movie.Genre,
+            Title = movie.Title,
+            Actors = actorsDto
+        };
+
+        return movieDto;
+    }
+
     [HttpPut("{Id}")]
     public async Task<IActionResult> PutMovie(int id, Movie movie)
     {
@@ -54,36 +89,57 @@ public class MoviesController : Controller
     [HttpPost]
     public async Task<ActionResult<MovieCreateDto>> PostMovie(MovieCreateDto movieDto)
     {
-        Movie movie = new Movie()
+        if (movieDto.Id == 0)
         {
-            Id = movieDto.Id,
-            Title = movieDto.Title,
-            Description = movieDto.Description,
-            Genre = movieDto.Genre
-        };
-
-        List<Actor> actors = new List<Actor>();
-        foreach (var actorId in movieDto.ActorsId)
-        {
-            Actor actor = await unitOfWork.ActorsRepository.GetByIdAsync(actorId);
-            if (actor != null)
+            Movie movie = new Movie()
             {
-                actor.Movies.Add(movie);
-                actors.Add(actor);
-            }
-        }
+                Id = movieDto.Id,
+                Title = movieDto.Title,
+                Description = movieDto.Description,
+                Genre = movieDto.Genre
+            };
 
-        movie.Actors = actors;
-        if (movie.Id == 0)
-        {
+            List<Actor> actors = new List<Actor>();
+            foreach (var actorId in movieDto.ActorsId)
+            {
+                Actor actor = await unitOfWork.ActorsRepository.GetByIdAsync(actorId);
+                if (actor != null)
+                {
+                    actors.Add(actor);
+                }
+            }
+
+            movie.Actors = actors;
             await unitOfWork.MoviesRepository.AddAsync(movie);
+
+            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
         }
         else
         {
-            await unitOfWork.MoviesRepository.UpdateAsync(movie);
-        }
+            Movie movie = await unitOfWork.MoviesRepository.GetByIdWithActorsAsync(movieDto.Id);
 
-        return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+            movie.Title = movieDto.Title;
+            movie.Description = movieDto.Description;
+            movie.Genre = movieDto.Genre;
+
+            for (int i = movie.Actors.Count - 1; i >= 0; i--)
+            {
+                movie.Actors.RemoveAt(i);
+            }
+
+            foreach (var actorId in movieDto.ActorsId)
+            {
+                Actor actor = await unitOfWork.ActorsRepository.GetByIdAsync(actorId);
+                if (actor != null)
+                {
+                    movie.Actors.Add(actor);
+                }
+            }
+
+            await unitOfWork.MoviesRepository.UpdateAsync(movie);
+
+            return CreatedAtAction("GetMovie", new { id = movie.Id }, movie);
+        }
     }
 
     // GET: Movies/Delete/5

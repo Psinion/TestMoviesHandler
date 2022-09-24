@@ -40,7 +40,7 @@ const CreateMoviePage = () => {
             return;
         }
 
-        const url = Actions.API_URL_GET_MOVIE;
+        const url = Actions.API_URL_GET_SLIM_MOVIE;
         fetch(url + '/' + id, {
             method: 'GET'
         })
@@ -53,10 +53,14 @@ const CreateMoviePage = () => {
                 console.log(error);
                 alert(error);
             });
+
+
     }
 
     function setMovieData(movie) {
         setValues(movie);
+        setSelectedActors(movie.actors);
+
     }
 
     function getActors() {
