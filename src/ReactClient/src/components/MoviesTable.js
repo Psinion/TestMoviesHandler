@@ -76,8 +76,13 @@ const MoviesTable = function() {
                             <Button variant="outline-success">Create Movie</Button>
                         </Link>
                     </Col>
-                    <Col>
+                    <Col sm={8}>
                         <div className="d-flex">
+                            <i className="me-2" style={{whiteSpace: "nowrap", marginTop: "5px", fontSize: "13pt"}}>Filter Mode:</i>
+                            <Form.Select className="me-2">
+                                <option value='0'>Movie name</option>
+                                <option value='1'>Actor name</option>
+                            </Form.Select>
                             <Form.Control type="text" value={dynamicFilter}
                                           onChange={event => setDynamicFilter(event.target.value)}
                                           onKeyPress={event => {
