@@ -17,6 +17,8 @@ public class Startup
     {
         services.AddControllers();
 
+        services.AddSwaggerGen();
+
         services.AddDbContext<MoviesDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
         );
@@ -48,6 +50,8 @@ public class Startup
         if (env.IsDevelopment())
         {
             app.UseDeveloperExceptionPage();
+            app.UseSwagger();
+            app.UseSwaggerUI();
         }
 
         app.UseRouting();
