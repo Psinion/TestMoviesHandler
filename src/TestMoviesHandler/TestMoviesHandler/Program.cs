@@ -1,3 +1,5 @@
+using TestMoviesHandler.StartupConfiguration;
+
 namespace TestMoviesHandler;
 
 public class Program

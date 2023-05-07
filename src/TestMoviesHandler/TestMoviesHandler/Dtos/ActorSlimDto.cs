@@ -1,11 +1,11 @@
-﻿using TestMoviesHandler.Models.Base;
+﻿using TestMoviesHandler.Dtos.Base;
 
-namespace TestMoviesHandler.Models;
+namespace TestMoviesHandler.Dtos;
 
 /// <summary>
 /// Not hierarchical dto
 /// </summary>
-public class ActorSlimDto : BaseDto
+public class ActorSlimDto : IDto
 {
     public int Id { get; set; }
     public string Name { get; set; }

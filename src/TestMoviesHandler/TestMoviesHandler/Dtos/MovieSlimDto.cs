@@ -1,9 +1,9 @@
-﻿using TestMoviesHandler.Models.Base;
+﻿using TestMoviesHandler.Dtos.Base;
 using TestMoviesHandler.Models.Enums;
 
-namespace TestMoviesHandler.Models;
+namespace TestMoviesHandler.Dtos;
 
-public class MovieSlimDto : BaseDto
+public class MovieSlimDto : IDto
 {
     public int Id { get; set; }
 

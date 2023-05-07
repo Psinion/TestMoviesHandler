@@ -1,12 +1,12 @@
-﻿using TestMoviesHandler.Models.Base;
+﻿using TestMoviesHandler.Dtos.Base;
 using TestMoviesHandler.Models.Enums;
 
-namespace TestMoviesHandler.Models;
+namespace TestMoviesHandler.Dtos;
 
 /// <summary>
 /// Data Transfer Object for movie creation.
 /// </summary>
-public class MovieCreateDto : BaseDto
+public class MovieCreateDto : IDto
 {
     public int Id { get; set; }
 

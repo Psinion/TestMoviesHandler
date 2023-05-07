@@ -3,13 +3,14 @@ using Microsoft.CodeAnalysis.VisualBasic.Syntax;
 using TestMoviesHandler.Data;
 using TestMoviesHandler.Data.Models;
 using TestMoviesHandler.Data.Repositories;
+using TestMoviesHandler.Dtos;
 using TestMoviesHandler.Models;
 
 namespace TestMoviesHandler.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MoviesController : Controller
+public class MoviesController : ControllerBase
 {
     private readonly UnitOfWork unitOfWork;
     private MoviesDbContext context;
@@ -18,6 +19,12 @@ public class MoviesController : Controller
     {
         unitOfWork = new UnitOfWork(context);
         this.context = context;
+    }
+
+    [HttpGet("TestMethod")]
+    public async Task<ActionResult<IEnumerable<Movie>>> GetTestMethod()
+    {
+        throw new Exception("Kekes");
     }
 
     // GET: api/movies

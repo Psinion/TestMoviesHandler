@@ -1,8 +1,7 @@
-﻿using System.Text.Json.Serialization;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using TestMoviesHandler.Data;
 
-namespace TestMoviesHandler;
+namespace TestMoviesHandler.StartupConfiguration;
 
 public class Startup
 {
@@ -36,13 +35,15 @@ public class Startup
             });
         });
 
-        services.AddControllersWithViews()
-            .AddJsonOptions(options =>
-            {
-                options
-                    .JsonSerializerOptions
-                    .ReferenceHandler = ReferenceHandler.IgnoreCycles;
-            });
+        services.AddApplicationServices();
+
+        //services.AddControllersWithViews()
+        //    .AddJsonOptions(options =>
+        //    {
+        //        options
+        //            .JsonSerializerOptions
+        //            .ReferenceHandler = ReferenceHandler.IgnoreCycles;
+        //    });
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -59,6 +60,20 @@ public class Startup
         app.UseCors();
 
         app.UseAuthorization();
+
+        app.Use(async (context, next) =>
+            {
+                try
+                {
+                    await next(context);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex);
+                    throw;
+                }
+            }
+        );
 
         app.UseEndpoints(endpoints =>
             endpoints.MapControllers()
