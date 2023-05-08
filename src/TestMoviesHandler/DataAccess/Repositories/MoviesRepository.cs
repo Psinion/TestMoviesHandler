@@ -1,11 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Mvs.Data.Contexts;
-using Mvs.Data.Repositories.Base;
+using Mvs.Data.Repositories;
 using Mvs.Domain.Entities;
 
-namespace Mvs.Data.Repositories;
+namespace Mvs.Data.Access.EF.Repositories;
 
-public class MoviesRepository : Repository<Movie>, IMoviesRepository
+public class MoviesRepository : GenericRepository<Movie>, IMoviesRepository
 {
     public MoviesRepository(MoviesDbContext context) : base(context)
     {

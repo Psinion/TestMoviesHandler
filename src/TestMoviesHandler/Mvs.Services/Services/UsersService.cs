@@ -1,21 +1,21 @@
-﻿using Mvs.Data.Repositories.Base;
-using Mvs.Data.Services.Base;
+﻿using Mvs.Data.Repositories;
+using Mvs.Data.Services;
 using Mvs.Domain.DTOs;
 
-namespace Mvs.Data.Services;
+namespace Mvs.Logic.Services;
 
 public class UsersService : IUsersService
 {
-    private readonly IUsersRepository _usersRepository;
+    private readonly IUsersRepository usersRepository;
 
     public UsersService(IUsersRepository usersRepository)
     {
-        _usersRepository = usersRepository;
+        this.usersRepository = usersRepository;
     }
 
     public async Task<UserAuthResponseDto?> Authenticate(UserAuthRequestDto request)
     {
-        var user = await _usersRepository.Authenticate(request);
+        var user = await usersRepository.Authenticate(request);
 
         if (user == null)
         {

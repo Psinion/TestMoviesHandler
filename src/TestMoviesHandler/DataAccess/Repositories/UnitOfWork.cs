@@ -1,7 +1,7 @@
 ﻿using Mvs.Data.Contexts;
-using Mvs.Data.Repositories.Base;
+using Mvs.Data.Repositories;
 
-namespace Mvs.Data.Repositories;
+namespace Mvs.Data.Access.EF.Repositories;
 
 public class UnitOfWork : IUnitOfWork
 {

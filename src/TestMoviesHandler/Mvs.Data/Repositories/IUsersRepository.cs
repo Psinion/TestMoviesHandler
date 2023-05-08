@@ -1,9 +1,9 @@
 ﻿using Mvs.Domain.DTOs;
 using Mvs.Domain.Entities;
 
-namespace Mvs.Data.Repositories.Base;
+namespace Mvs.Data.Repositories;
 
-public interface IUsersRepository : IRepository<User>
+public interface IUsersRepository : IGenericRepository<User>
 {
     Task<User?> GetByUserName(string userName);
 

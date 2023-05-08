@@ -1,4 +1,4 @@
-﻿namespace Mvs.Data.Repositories.Base;
+﻿namespace Mvs.Data.Repositories;
 
 public interface IUnitOfWork : IDisposable
 {

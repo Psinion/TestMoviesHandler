@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Mvs.Data.Services.Base;
+using Mvs.Data.Services;
 using Mvs.Domain.DTOs;
 
 namespace Mvs.Application.Controllers;

@@ -1,7 +1,7 @@
-﻿using Mvs.Data.Repositories;
-using Mvs.Data.Repositories.Base;
+﻿using Mvs.Data.Access.EF.Repositories;
+using Mvs.Data.Repositories;
 using Mvs.Data.Services;
-using Mvs.Data.Services.Base;
+using Mvs.Logic.Services;
 
 namespace Mvs.Application.StartupConfiguration;
 

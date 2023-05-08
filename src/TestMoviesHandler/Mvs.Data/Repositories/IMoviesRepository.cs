@@ -1,8 +1,8 @@
 ﻿using Mvs.Domain.Entities;
 
-namespace Mvs.Data.Repositories.Base;
+namespace Mvs.Data.Repositories;
 
-public interface IMoviesRepository : IRepository<Movie>
+public interface IMoviesRepository : IGenericRepository<Movie>
 { 
     Task<List<Movie>> GetAllWithActorsAsync();
 

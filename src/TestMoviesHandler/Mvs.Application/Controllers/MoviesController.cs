@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mvs.Data.Access.EF.Repositories;
 using Mvs.Data.Contexts;
 using Mvs.Data.Repositories;
 using Mvs.Domain.DTOs;
@@ -107,7 +108,7 @@ public class MoviesController : ControllerBase
             List<Actor> actors = new List<Actor>();
             foreach (var actorId in movieDto.ActorsId)
             {
-                Actor actor = await unitOfWork.ActorsRepository.GetByIdAsync(actorId);
+                Actor actor = await unitOfWork.ActorsRepository.FindByIdAsync(actorId);
                 if (actor != null)
                 {
                     actors.Add(actor);
@@ -134,7 +135,7 @@ public class MoviesController : ControllerBase
 
             foreach (var actorId in movieDto.ActorsId)
             {
-                Actor actor = await unitOfWork.ActorsRepository.GetByIdAsync(actorId);
+                Actor actor = await unitOfWork.ActorsRepository.FindByIdAsync(actorId);
                 if (actor != null)
                 {
                     movie.Actors.Add(actor);

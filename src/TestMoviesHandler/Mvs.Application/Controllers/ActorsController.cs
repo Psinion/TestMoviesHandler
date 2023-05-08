@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mvs.Data.Access.EF.Repositories;
 using Mvs.Data.Contexts;
 using Mvs.Data.Repositories;
 using Mvs.Domain.Entities;
@@ -18,9 +19,8 @@ public class ActorsController : Controller
         this.context = context;
     }
 
-    // GET: api/movies
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Actor>>> GetMovies()
+    public async Task<ActionResult<IEnumerable<Actor>>> GetActors()
     {
         return await unitOfWork.ActorsRepository.GetAllAsync();
     }

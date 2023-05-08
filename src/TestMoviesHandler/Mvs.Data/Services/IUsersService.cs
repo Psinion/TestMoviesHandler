@@ -1,6 +1,6 @@
 ﻿using Mvs.Domain.DTOs;
 
-namespace Mvs.Data.Services.Base;
+namespace Mvs.Data.Services;
 
 public interface IUsersService
 {
