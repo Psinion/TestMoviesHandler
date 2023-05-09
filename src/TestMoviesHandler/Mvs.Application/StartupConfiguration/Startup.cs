@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Mvs.Application.Middlewares;
 using Mvs.Data.Contexts;
 
 namespace Mvs.Application.StartupConfiguration;
@@ -59,21 +60,7 @@ public class Startup
 
         app.UseCors();
 
-        app.UseAuthorization();
-
-        app.Use(async (context, next) =>
-            {
-                try
-                {
-                    await next(context);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex);
-                    throw;
-                }
-            }
-        );
+        app.UseMiddleware<JwtMiddleware>();
 
         app.UseEndpoints(endpoints =>
             endpoints.MapControllers()

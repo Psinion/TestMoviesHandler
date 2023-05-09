@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Mvs.Application.Middlewares;
 using Mvs.Data.Access.EF.Repositories;
 using Mvs.Data.Contexts;
 using Mvs.Data.Repositories;
@@ -19,6 +21,7 @@ public class ActorsController : Controller
         this.context = context;
     }
 
+    [CustomAuthorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Actor>>> GetActors()
     {

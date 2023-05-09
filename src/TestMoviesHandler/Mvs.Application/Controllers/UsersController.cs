@@ -19,6 +19,13 @@ public class UsersController : Controller
     [Route("authenticate")]
     public async Task<ActionResult<UserAuthResponseDto?>> Authenticate(UserAuthRequestDto authRequest)
     {
-        return await _usersService.Authenticate(authRequest);
+        var response = await _usersService.Authenticate(authRequest);
+
+        if (response == null)
+        {
+            return BadRequest("error");
+        }
+
+        return response;
     }
 }
