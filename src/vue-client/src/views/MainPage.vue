@@ -6,15 +6,16 @@
 </template>
 
 <script lang="ts">
+
 export default {
   data() {
     return {
-      description: import.meta.env.VITE_SERVER_URL,
+      description: this.$mainConfig.apiBaseUrl,
     }
   },
   methods: {
     async simpleFetch() {
-      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/movies/testmethod`);
+      const response = await fetch(`${this.$mainConfig.apiBaseUrl}/api/movies/testmethod`);
       const data = response.json();
       //const movies = <Movie[]>data;
       console.log(data);
