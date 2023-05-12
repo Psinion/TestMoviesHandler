@@ -11,6 +11,9 @@ namespace Mvs.Logic.Services;
 
 public class UsersService : IUsersService
 {
+    private const int shortExpireMinutes = 1440;
+    private const int longExpireMinutes = 43200;
+
     private readonly IUsersRepository _usersRepository;
     private readonly string _jwtSecretKey;
 
@@ -31,8 +34,11 @@ public class UsersService : IUsersService
 
         var response = new UserAuthResponseDto()
         {
-            User = user,
-            Token = GenerateToken(user.UserName, 600)
+            User = new UserDto()
+            {
+                Username = user.UserName
+            },
+            Token = GenerateToken(user.UserName, request.RememberMe ? longExpireMinutes : shortExpireMinutes)
         };
 
         return response;

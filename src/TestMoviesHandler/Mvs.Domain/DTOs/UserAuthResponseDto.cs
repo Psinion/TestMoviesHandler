@@ -5,6 +5,6 @@ namespace Mvs.Domain.DTOs;
 
 public class UserAuthResponseDto : IDto
 {
-    public User User { get; set; }
-    public string Token { get; set; }
+    public UserDto? User { get; set; }
+    public string Token { get; set; } = "";
 }

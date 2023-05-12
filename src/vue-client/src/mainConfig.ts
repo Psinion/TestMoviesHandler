@@ -4,13 +4,13 @@ interface Config {
   apiBaseUrl: string;
 };
 
-const config : Config = {
+export const mainConfig : Config = {
   apiBaseUrl: import.meta.env.VITE_SERVER_URL as string
 }
 
 export default {
   install: (Vue: App) => {
-    Vue.config.globalProperties.$mainConfig = config;
+    Vue.config.globalProperties.$mainConfig = mainConfig;
   }
 }
 

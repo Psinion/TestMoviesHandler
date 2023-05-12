@@ -3,7 +3,7 @@ import App from './App.vue'
 import { Quasar } from 'quasar'
 import router from './router/index'
 
-import mainConfig from '../mainConfig'
+import mainConfig from './mainConfig'
 import { createPinia } from 'pinia';
 
 // Main styles

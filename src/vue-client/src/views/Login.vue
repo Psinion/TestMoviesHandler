@@ -35,7 +35,16 @@
 </template>
 
 <script lang="ts">
+import { useAuthStore } from '@/stores/AuthStore';
+
 export default {
+  setup() {
+    const authStore = useAuthStore();
+
+    return {
+      authStore
+    }
+  },
   data() {
     return {
       username: "",
@@ -45,13 +54,8 @@ export default {
   },
   methods: {
     async login() {
-      console.log('try log');
-      return;
-
-      const response = await fetch(`${import.meta.env.VITE_SERVER_URL}/api/movies/testmethod`);
-      const data = response.json();
-      //const movies = <Movie[]>data;
-      console.log(data);
+      console.log('keke');
+      await this.authStore.login(this.username, this.password, this.rememberMe);
     }
   }
 }
