@@ -6,16 +6,15 @@
     >
       <h5 class="row justify-center">Авторизация</h5>
       <q-input
-        filled
+        :dense="true"
         v-model="username"
         label="Логин"
-        hint="Без указания электронной почты"
         lazy-rules
         :rules="[ val => val && val.length > 0 || 'Обязательное поле']"
       />
 
       <q-input
-        filled
+        :dense="true"
         type="password"
         v-model="password"
         label="Пароль"
@@ -47,8 +46,8 @@ export default {
   },
   data() {
     return {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
       rememberMe: false
     }
   },
