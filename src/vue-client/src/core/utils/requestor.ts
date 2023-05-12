@@ -33,7 +33,7 @@ export class requestor {
       body
     };
 
-    const request = new Request(input, params);
+    const request = new Request(`${this.baseUrl}/${input}`, params);
     const response = await fetch(request);
 
     if (!response.ok) {

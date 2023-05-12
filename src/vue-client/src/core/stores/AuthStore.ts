@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import type { IUserAuthResponseDto } from '@/models/dtos/IUserAuthResponseDto';
+import type { IUserAuthResponseDto } from '@/modules/auth/dtos/IUserAuthResponseDto';
 import { mainConfig } from '@/mainConfig';
-import type { IUserDto } from '@/models/dtos/IUserDto';
-import type { IUserAuthRequestDto } from '@/models/dtos/IUserAuthRequestDto';
-import { mainRequestor } from '@/utils/requestor';
+import type { IUserDto } from '@/modules/auth/dtos/IUserDto';
+import type { IUserAuthRequestDto } from '@/modules/auth/dtos/IUserAuthRequestDto';
+import { mainRequestor } from '@/core/utils/requestor';
 
 const apiUrl = mainConfig.apiBaseUrl;
 

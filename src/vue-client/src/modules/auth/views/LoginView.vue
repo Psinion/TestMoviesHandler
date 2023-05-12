@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import { useAuthStore } from '@/stores/AuthStore';
+import { useAuthStore } from '@/core/stores/AuthStore';
 
 export default {
   setup() {

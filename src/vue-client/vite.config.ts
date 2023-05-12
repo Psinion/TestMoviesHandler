@@ -11,7 +11,7 @@ export default defineConfig({
     vue(), 
     vueJsx(),
     quasar({
-      sassVariables: 'src/css/quasar.variables.scss'
+      sassVariables: 'src/core/styles/quasar.variables.scss'
     })
   ],
   build: {

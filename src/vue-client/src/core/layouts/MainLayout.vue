@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <MainNavbar/>
+    <main-navbar/>
 
     <q-page-container>
       <router-view />
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import MainNavbar from '@/components/MainNavbar.vue';
+import MainNavbar from '@/core/components/MainNavbar.vue';
 
 export default {
   components: {
