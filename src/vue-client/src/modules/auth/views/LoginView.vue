@@ -1,7 +1,7 @@
 <template>
   <body>
     <q-page class="row auth-container">
-      <q-form @submit="login">
+      <q-form ref="loginForm" @submit="login">
         <span class="row justify-center auth-header">Авторизация</span>
         <div class="auth-form">
           <q-input
@@ -23,7 +23,7 @@
 
           <q-toggle v-model="rememberMe" label="Запомнить меня" />
 
-          <div>
+          <div class="action-buttons">
             <q-btn class="full-width" label="Войти" type="submit" color="primary" />
           </div>
         </div>
@@ -34,12 +34,16 @@
 
 <script lang="ts">
 import { useAuthStore } from '@/core/stores/AuthStore';
+import type { QForm } from 'quasar';
+import { ref } from 'vue';
 
 export default {
   setup() {
+    const loginForm = ref<QForm>();
     const authStore = useAuthStore();
 
     return {
+      loginForm,
       authStore
     };
   },
@@ -52,8 +56,14 @@ export default {
   },
   methods: {
     async login() {
-      console.log('keke');
-      await this.authStore.login(this.username, this.password, this.rememberMe);
+      const cachedUsername = this.username;
+      const cachedPassword = this.password;
+      const cachedRememberMe = this.rememberMe;
+      this.username = '';
+      this.password = '';
+      this.rememberMe = false;
+      this.loginForm?.resetValidation();
+      await this.authStore.login(cachedUsername, cachedPassword, cachedRememberMe);
     }
   }
 };
@@ -82,5 +92,9 @@ export default {
   padding: 20px;
   font-weight: bold;
   background-color: $secondary;
+}
+
+.action-buttons {
+  padding-top: 20px;
 }
 </style>

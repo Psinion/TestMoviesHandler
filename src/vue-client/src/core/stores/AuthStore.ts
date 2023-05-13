@@ -1,14 +1,11 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import type { IUserAuthResponseDto } from '@/modules/auth/dtos/IUserAuthResponseDto';
-import { mainConfig } from '@/mainConfig';
 import type { IUserDto } from '@/modules/auth/dtos/IUserDto';
 import type { IUserAuthRequestDto } from '@/modules/auth/dtos/IUserAuthRequestDto';
 import { mainRequestor } from '@/core/utils/requestor';
 
-const apiUrl = mainConfig.apiBaseUrl;
-
-export const useAuthStore = defineStore('authStore2', () => {
+export const useAuthStore = defineStore('authStore', () => {
   const token = ref<string | null>(null);
   const user = ref<IUserDto | null>(null);
   const returnUrl = ref<string | null>(null);
@@ -16,15 +13,16 @@ export const useAuthStore = defineStore('authStore2', () => {
   const isAuthenticated = computed(() => token.value != null);
 
   const login = async (username: string, password: string, rememberMe: boolean) => {
-    const endpoint = 'authenticate';
+    const endpoint = 'users/authenticate';
 
     const requestData: IUserAuthRequestDto = {
       username: username,
       password: password,
       rememberMe: rememberMe
     };
+
     const response = await mainRequestor.post<IUserAuthRequestDto, IUserAuthResponseDto>(
-      `${apiUrl}/${endpoint}`,
+      `${endpoint}`,
       'POST',
       requestData
     );

@@ -37,6 +37,7 @@ export class requestor {
     const response = await fetch(request);
 
     if (!response.ok) {
+      console.log(response);
       throw new Error(response.statusText);
     }
 
@@ -44,10 +45,7 @@ export class requestor {
     return data;
   }
 
-  async get<TResponse>(
-    input: RequestInfo,
-    extraHeaders?: IHeader[]
-  ): Promise<TResponse> {
+  async get<TResponse>(input: RequestInfo, extraHeaders?: IHeader[]): Promise<TResponse> {
     return await this.request<TResponse>(input, 'GET', extraHeaders);
   }
 
@@ -59,14 +57,13 @@ export class requestor {
   ): Promise<TResponse> {
     const bodyParam = JSON.stringify(body);
 
-    extraHeaders?.push({ key: 'Content-type', value: 'application/json' });
+    if (!extraHeaders) {
+      extraHeaders = [];
+    }
 
-    return await this.request<TResponse>(
-      input,
-      method,
-      extraHeaders,
-      bodyParam
-    );
+    extraHeaders.push({ key: 'Content-type', value: 'application/json' });
+
+    return await this.request<TResponse>(input, method, extraHeaders, bodyParam);
   }
 }
 
