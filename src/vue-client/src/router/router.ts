@@ -10,6 +10,11 @@ const routes = [
         component: () => import('@/core/views/IndexView.vue')
       },
       {
+        path: '/error',
+        name: 'Error',
+        component: () => import('@/core/views/ErrorView.vue')
+      },
+      {
         path: '/login',
         name: 'Login',
         component: () => import('@/modules/auth/views/LoginView.vue')
@@ -19,7 +24,7 @@ const routes = [
   {
     path: '/test',
     name: 'TestLayout',
-    component: () => import('@/modules/test/layouts/TestLayout.vue'),
+    component: () => import('@/modules/test/layouts/TestLayout.vue')
   }
 ];
 

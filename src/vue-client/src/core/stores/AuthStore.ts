@@ -1,14 +1,13 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
 import type { IUserAuthResponseDto } from '@/modules/auth/dtos/IUserAuthResponseDto';
-import type { IUserDto } from '@/modules/auth/dtos/IUserDto';
 import type { IUserAuthRequestDto } from '@/modules/auth/dtos/IUserAuthRequestDto';
 import { mainRequestor } from '@/core/utils/requestor';
 import router from '@/router';
 import type { IUser } from '../models/IUser';
 
 export const useAuthStore = defineStore('authStore', () => {
-  const user = ref<IUser | null>(JSON.parse(localStorage.getItem('user') ?? '') as IUser);
+  const user = ref<IUser | null>(JSON.parse(localStorage.getItem('user') as string) as IUser);
   const token = ref<string | null>(localStorage.getItem('token'));
   const returnUrl = ref<string | null>(null);
 

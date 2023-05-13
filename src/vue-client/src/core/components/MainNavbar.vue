@@ -8,13 +8,11 @@
         Title
       </q-toolbar-title>
       <q-space />
-      <span>{{ user?.username }}</span>
-      <q-btn v-if="user != null" dense flat no-wrap>
-        <q-icon name="las la-user" />
-        <q-menu auto-close>
+      <q-btn v-if="user != null" dense flat no-wrap :label="user?.username" icon-right="las la-user">
+        <q-menu fit auto-close>
           <q-list dense>
             <q-item clickable @click="logout">
-              <q-item-section>Выйти</q-item-section>
+              <q-item-section>Выход</q-item-section>
             </q-item>
           </q-list>
         </q-menu>

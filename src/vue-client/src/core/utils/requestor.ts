@@ -1,4 +1,5 @@
 import { mainConfig } from '@/mainConfig';
+import { Notify } from 'quasar';
 
 type BodyMethodType = 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS';
 type MethodType = BodyMethodType | 'GET';
@@ -34,17 +35,28 @@ export class requestor {
     };
 
     const request = new Request(`${this.baseUrl}/${input}`, params);
-    const response = await fetch(request);
+    try {
+      const response = await fetch(request);
 
-    if (!response.ok) {
-      if (response.status == 400) {
-        const msg = await response.text();
-        throw new Error(msg);
+      if (!response.ok) {
+        if (response.status == 400) {
+          const msg = await response.text();
+          throw new Error(msg);
+        }
       }
-    }
 
-    const data = (await response.json()) as TResponse;
-    return data;
+      const data = (await response.json()) as TResponse;
+      return data;
+    } catch (error) {
+      Notify.create({
+        type: 'negative',
+        message: 'Не удалось получить ответ от сервера',
+        position: 'top',
+        timeout: 15000,
+        progress: true
+      });
+      throw error;
+    }
   }
 
   async get<TResponse>(input: RequestInfo, extraHeaders?: IHeader[]): Promise<TResponse> {
