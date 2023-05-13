@@ -15,6 +15,11 @@ const routes = [
         component: () => import('@/modules/auth/views/LoginView.vue')
       }
     ]
+  },
+  {
+    path: '/test',
+    name: 'TestLayout',
+    component: () => import('@/modules/test/layouts/TestLayout.vue'),
   }
 ];
 
