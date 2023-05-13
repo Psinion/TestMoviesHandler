@@ -23,7 +23,7 @@ public class UsersController : Controller
 
         if (response == null)
         {
-            return BadRequest("UserNotFound");
+            return BadRequest("IncorrectUserAuth");
         }
 
         return response;

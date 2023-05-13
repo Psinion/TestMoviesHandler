@@ -7,20 +7,20 @@ namespace Mvs.Data.Access.EF.Repositories;
 
 public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : Entity, new()
 {
-    protected readonly MoviesDbContext context;
-    protected readonly DbSet<TEntity> dbSet;
+    protected readonly MoviesDbContext _context;
+    protected readonly DbSet<TEntity> _dbSet;
 
     public GenericRepository(MoviesDbContext context)
     {
-        this.context = context;
-        this.dbSet = context.Set<TEntity>();
+        _context = context;
+        _dbSet = context.Set<TEntity>();
     }
 
     public virtual async Task<List<TEntity>> GetAllAsync(CancellationToken cancellationToken = default) 
-        => await dbSet.ToListAsync(cancellationToken);
+        => await _dbSet.ToListAsync(cancellationToken);
 
     public virtual async Task<TEntity?> FindByIdAsync(int id, CancellationToken cancellationToken = default) 
-        => await dbSet.FindAsync(id, cancellationToken);
+        => await _dbSet.FindAsync(id, cancellationToken);
 
     public virtual async Task<TEntity> CreateAsync(TEntity item, CancellationToken cancellationToken = default)
     {
@@ -29,8 +29,8 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
             throw new ArgumentNullException(nameof(item));
         }
 
-        await context.AddAsync(item, cancellationToken);
-        await context.SaveChangesAsync(cancellationToken);
+        await _context.AddAsync(item, cancellationToken);
+        await _context.SaveChangesAsync(cancellationToken);
 
         return item;
     }
@@ -42,18 +42,18 @@ public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEnt
             throw new ArgumentNullException(nameof(item));
         }
 
-        context.Update(item);
-        await context.SaveChangesAsync(cancellationToken);
+        _context.Update(item);
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     public virtual async Task DeleteAsync(int id, CancellationToken cancellationToken = default)
     {
-        context.Remove(new TEntity { Id = id });
-        await context.SaveChangesAsync(cancellationToken);
+        _context.Remove(new TEntity { Id = id });
+        await _context.SaveChangesAsync(cancellationToken);
     }
 
     public void Dispose()
     {
-        context.Dispose();
+        _context.Dispose();
     }
 }

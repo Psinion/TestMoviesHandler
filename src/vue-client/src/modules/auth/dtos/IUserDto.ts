@@ -1,3 +1,3 @@
 export interface IUserDto {
-  userName: string;
+  username: string;
 }

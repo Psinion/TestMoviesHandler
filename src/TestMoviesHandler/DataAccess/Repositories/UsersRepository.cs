@@ -12,11 +12,14 @@ public class UsersRepository : GenericRepository<User>, IUsersRepository
     {
     }
 
-    public async Task<User?> GetByUserName(string userName) => await dbSet.FirstOrDefaultAsync(x => x.UserName == userName);
+    public async Task<User?> GetByUserName(string userName) => await _dbSet.FirstOrDefaultAsync(x => x.UserName == userName);
 
     public async Task<User?> Authenticate(UserAuthRequestDto userAuthRequest)
     {
-        var user = await GetByUserName(userAuthRequest.UserName);
+        var user = await _context.Users.FirstOrDefaultAsync(x => 
+            x.UserName == userAuthRequest.UserName &&
+            x.Password == userAuthRequest.Password
+        );
         return user;
     }
 }

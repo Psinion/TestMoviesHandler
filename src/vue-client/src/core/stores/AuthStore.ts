@@ -4,10 +4,12 @@ import type { IUserAuthResponseDto } from '@/modules/auth/dtos/IUserAuthResponse
 import type { IUserDto } from '@/modules/auth/dtos/IUserDto';
 import type { IUserAuthRequestDto } from '@/modules/auth/dtos/IUserAuthRequestDto';
 import { mainRequestor } from '@/core/utils/requestor';
+import router from '@/router';
+import type { IUser } from '../models/IUser';
 
 export const useAuthStore = defineStore('authStore', () => {
-  const token = ref<string | null>(null);
-  const user = ref<IUserDto | null>(null);
+  const user = ref<IUser | null>(JSON.parse(localStorage.getItem('user') ?? '') as IUser);
+  const token = ref<string | null>(localStorage.getItem('token'));
   const returnUrl = ref<string | null>(null);
 
   const isAuthenticated = computed(() => token.value != null);
@@ -28,12 +30,15 @@ export const useAuthStore = defineStore('authStore', () => {
         requestData
       );
 
-      user.value = response.user;
+      user.value = {
+        username: response.user.username
+      };
       token.value = response.token;
       if (rememberMe) {
         localStorage.setItem('user', JSON.stringify(user.value));
         localStorage.setItem('token', token.value);
       }
+      router.push(returnUrl.value ?? { name: 'Index' });
     } catch (error) {
       throw error;
       // Notify.create({
@@ -51,6 +56,7 @@ export const useAuthStore = defineStore('authStore', () => {
     token.value = null;
     localStorage.removeItem('user');
     localStorage.removeItem('token');
+    router.push({ name: 'Login' });
   };
 
   return {

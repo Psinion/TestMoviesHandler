@@ -16,6 +16,7 @@ import '@quasar/extras/roboto-font-latin-ext/roboto-font-latin-ext.css';
 
 // Quasar iconspacks
 import '@quasar/extras/material-icons/material-icons.css';
+import '@quasar/extras/line-awesome/line-awesome.css';
 
 createApp(App)
   .use(mainConfig)

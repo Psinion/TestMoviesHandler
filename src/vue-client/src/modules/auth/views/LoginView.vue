@@ -76,8 +76,8 @@ export default {
         if (error instanceof Error) {
           let msg = '';
           switch (error.message) {
-            case 'UserNotFound':
-              msg = 'Такой пользователь не найден.';
+            case 'IncorrectUserAuth':
+              msg = 'Не верный логин или пароль.';
           }
           this.errorMessage = msg;
         }
