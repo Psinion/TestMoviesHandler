@@ -1,16 +1,16 @@
 <template>
-  <q-header elevated class="bg-primary text-white">
+  <q-header elevated class="bg-secondary text-white">
     <q-toolbar>
       <q-toolbar-title>
         <q-avatar>
-          <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg">
+          <img src="https://cdn.quasar.dev/logo-v2/svg/logo-mono-white.svg" />
         </q-avatar>
         Title
       </q-toolbar-title>
-      <q-space/>
+      <q-space />
       <q-btn dense flat no-wrap>
         <q-avatar rounded size="40px">
-          <img src="">
+          <img src="" />
         </q-avatar>
         <q-menu auto-close>
           <q-list dense>

@@ -1,6 +1,7 @@
 {
   "name": "vue-client",
   "version": "0.0.0",
+  "author": "Daniel Mosalev",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.ts,.vue ./",
