@@ -40,13 +40,6 @@ export const useAuthStore = defineStore('authStore', () => {
       router.push(returnUrl.value ?? { name: 'Index' });
     } catch (error) {
       throw error;
-      // Notify.create({
-      //   type: 'negative',
-      //   message: 'Danger, Will Robinson! Danger!',
-      //   position: 'top',
-      //   timeout: 5000,
-      //   progress: true
-      // });
     }
   };
 

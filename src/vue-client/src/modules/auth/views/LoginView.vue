@@ -19,7 +19,8 @@
             :rules="[val => (val !== null && val !== '') || 'Обязательное поле']"
           />
 
-          <q-toggle v-model="rememberMe" label="Запомнить меня" />
+          <q-checkbox v-model="rememberMe" label="Запомнить меня" />
+
           <div class="error-message-container">
             <transition name="fade">
               <span class="error-message" v-if="errorMessage.length > 0">{{ errorMessage }}</span>
