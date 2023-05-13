@@ -37,8 +37,10 @@ export class requestor {
     const response = await fetch(request);
 
     if (!response.ok) {
-      console.log(response);
-      throw new Error(response.statusText);
+      if (response.status == 400) {
+        const msg = await response.text();
+        throw new Error(msg);
+      }
     }
 
     const data = (await response.json()) as TResponse;

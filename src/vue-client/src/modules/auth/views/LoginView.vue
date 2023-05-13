@@ -5,7 +5,6 @@
         <span class="row justify-center auth-header">Авторизация</span>
         <div class="auth-form">
           <q-input
-            :dense="true"
             v-model="username"
             label="Логин"
             lazy-rules
@@ -13,7 +12,6 @@
           />
 
           <q-input
-            :dense="true"
             type="password"
             v-model="password"
             label="Пароль"
@@ -22,6 +20,11 @@
           />
 
           <q-toggle v-model="rememberMe" label="Запомнить меня" />
+          <div class="error-message-container">
+            <transition name="fade">
+              <span class="error-message" v-if="errorMessage.length > 0">{{ errorMessage }}</span>
+            </transition>
+          </div>
 
           <div class="action-buttons">
             <q-btn class="full-width" label="Войти" type="submit" color="primary" />
@@ -51,11 +54,14 @@ export default {
     return {
       username: '',
       password: '',
-      rememberMe: false
+      rememberMe: false,
+
+      errorMessage: ''
     };
   },
   methods: {
     async login() {
+      this.errorMessage = '';
       const cachedUsername = this.username;
       const cachedPassword = this.password;
       const cachedRememberMe = this.rememberMe;
@@ -63,7 +69,19 @@ export default {
       this.password = '';
       this.rememberMe = false;
       this.loginForm?.resetValidation();
-      await this.authStore.login(cachedUsername, cachedPassword, cachedRememberMe);
+
+      try {
+        await this.authStore.login(cachedUsername, cachedPassword, cachedRememberMe);
+      } catch (error) {
+        if (error instanceof Error) {
+          let msg = '';
+          switch (error.message) {
+            case 'UserNotFound':
+              msg = 'Такой пользователь не найден.';
+          }
+          this.errorMessage = msg;
+        }
+      }
     }
   }
 };
@@ -96,5 +114,22 @@ export default {
 
 .action-buttons {
   padding-top: 20px;
+}
+
+.error-message-container {
+  padding-top: 20px;
+}
+
+.error-message {
+  color: $negative;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease;
+}
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
 }
 </style>

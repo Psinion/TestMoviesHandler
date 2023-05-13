@@ -21,17 +21,28 @@ export const useAuthStore = defineStore('authStore', () => {
       rememberMe: rememberMe
     };
 
-    const response = await mainRequestor.post<IUserAuthRequestDto, IUserAuthResponseDto>(
-      `${endpoint}`,
-      'POST',
-      requestData
-    );
+    try {
+      const response = await mainRequestor.post<IUserAuthRequestDto, IUserAuthResponseDto>(
+        `${endpoint}`,
+        'POST',
+        requestData
+      );
 
-    user.value = response.user;
-    token.value = response.token;
-    if (rememberMe) {
-      localStorage.setItem('user', JSON.stringify(user.value));
-      localStorage.setItem('token', token.value);
+      user.value = response.user;
+      token.value = response.token;
+      if (rememberMe) {
+        localStorage.setItem('user', JSON.stringify(user.value));
+        localStorage.setItem('token', token.value);
+      }
+    } catch (error) {
+      throw error;
+      // Notify.create({
+      //   type: 'negative',
+      //   message: 'Danger, Will Robinson! Danger!',
+      //   position: 'top',
+      //   timeout: 5000,
+      //   progress: true
+      // });
     }
   };
 

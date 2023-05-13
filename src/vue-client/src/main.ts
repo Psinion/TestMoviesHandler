@@ -1,6 +1,6 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-import { Quasar } from 'quasar';
+import { Notify, Quasar } from 'quasar';
 import router from './router/index';
 
 import mainConfig from './mainConfig';
@@ -22,6 +22,11 @@ createApp(App)
   .use(router)
   .use(createPinia())
   .use(Quasar, {
-    plugins: {}
+    plugins: {
+      Notify
+    },
+    config: {
+      notify: {}
+    }
   })
   .mount('#app');
