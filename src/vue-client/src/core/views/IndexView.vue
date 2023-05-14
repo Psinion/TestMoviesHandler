@@ -6,7 +6,7 @@
 </template>
 
 <script lang="ts">
-import { mainRequestor, requestor } from '../utils/requestor';
+import { mainRequestor } from '../utils/requestor';
 
 export default {
   data() {
@@ -17,7 +17,6 @@ export default {
   methods: {
     async simpleFetch() {
       const response = await mainRequestor.get<string>('api/movies/testmethod');
-      //const movies = <Movie[]>data;
       console.log(response);
     }
   }
