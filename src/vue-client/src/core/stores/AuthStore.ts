@@ -32,11 +32,8 @@ export const useAuthStore = defineStore('authStore', () => {
         username: response.user.username
       };
       token.value = response.token;
-      console.log(token.value);
-      if (rememberMe) {
-        localStorage.setItem('user', JSON.stringify(user.value));
-        localStorage.setItem('token', token.value);
-      }
+      localStorage.setItem('user', JSON.stringify(user.value));
+      localStorage.setItem('token', token.value);
       router.push(returnUrl.value ?? { name: 'Index' });
     } catch (error) {
       throw error;
