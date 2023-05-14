@@ -5,7 +5,18 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
-    }
+    },
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitAny": true,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "strict": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+
+    // Дублируют @typescript-eslint/no-unused-vars
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
   },
 
   "references": [

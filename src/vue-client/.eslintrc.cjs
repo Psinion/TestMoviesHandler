@@ -21,11 +21,7 @@ module.exports = {
 
   // Rules order is important, please avoid shuffling them
   extends: [
-    // Base ESLint recommended rules
-    // 'eslint:recommended',
-
-    // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#usage
-    // ESLint typescript rules
+    'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
 
     // Uncomment any of the lines below to choose desired strictness,
@@ -73,6 +69,6 @@ module.exports = {
     'no-unused-vars': 'off',
 
     // allow debugger during development only
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off'
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   }
 }
