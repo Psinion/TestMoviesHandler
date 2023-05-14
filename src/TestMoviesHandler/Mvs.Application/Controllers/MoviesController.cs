@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mvs.Application.Middlewares;
+using Mvs.Data.Access.EF.Contexts;
 using Mvs.Data.Access.EF.Repositories;
-using Mvs.Data.Contexts;
 using Mvs.Data.Repositories;
 using Mvs.Domain.DTOs;
 using Mvs.Domain.Entities;
@@ -20,10 +21,11 @@ public class MoviesController : ControllerBase
         this.context = context;
     }
 
+    [CustomAuthorize]
     [HttpGet("TestMethod")]
-    public async Task<ActionResult<IEnumerable<Movie>>> GetTestMethod()
+    public async Task<ActionResult<string>> GetTestMethod()
     {
-        throw new Exception("Kekes");
+        return "kekes";
     }
 
     // GET: api/movies

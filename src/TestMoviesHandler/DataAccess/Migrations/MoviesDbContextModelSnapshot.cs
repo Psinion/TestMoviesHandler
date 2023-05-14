@@ -2,26 +2,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Mvs.Data.Contexts;
+using Mvs.Data.Access.EF.Contexts;
 
 #nullable disable
 
 namespace TestMoviesHandler.Migrations
 {
     [DbContext(typeof(MoviesDbContext))]
-    [Migration("20220730152112_added-movies-for-actor")]
-    partial class addedmoviesforactor
+    partial class MoviesDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.6")
+                .HasAnnotation("ProductVersion", "7.0.5")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("ActorMovie", b =>
                 {
@@ -38,13 +36,13 @@ namespace TestMoviesHandler.Migrations
                     b.ToTable("ActorMovie");
                 });
 
-            modelBuilder.Entity("TestMoviesHandler.Data.Models.Actor", b =>
+            modelBuilder.Entity("Mvs.Domain.Entities.Actor", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -59,13 +57,17 @@ namespace TestMoviesHandler.Migrations
                     b.ToTable("Actors");
                 });
 
-            modelBuilder.Entity("TestMoviesHandler.Data.Models.Movie", b =>
+            modelBuilder.Entity("Mvs.Domain.Entities.Movie", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(MAX)");
 
                     b.Property<int>("Genre")
                         .HasColumnType("int");
@@ -79,15 +81,36 @@ namespace TestMoviesHandler.Migrations
                     b.ToTable("Movies");
                 });
 
+            modelBuilder.Entity("Mvs.Domain.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
+                });
+
             modelBuilder.Entity("ActorMovie", b =>
                 {
-                    b.HasOne("TestMoviesHandler.Data.Models.Actor", null)
+                    b.HasOne("Mvs.Domain.Entities.Actor", null)
                         .WithMany()
                         .HasForeignKey("ActorsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("TestMoviesHandler.Data.Models.Movie", null)
+                    b.HasOne("Mvs.Domain.Entities.Movie", null)
                         .WithMany()
                         .HasForeignKey("MoviesId")
                         .OnDelete(DeleteBehavior.Cascade)

@@ -1,11 +1,13 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Mvs.Data.Repositories;
 using Mvs.Data.Services;
 using Mvs.Domain.DTOs;
+using Mvs.Domain.Entities;
 
 namespace Mvs.Logic.Services;
 
@@ -36,9 +38,9 @@ public class UsersService : IUsersService
         {
             User = new UserDto()
             {
-                Username = user.UserName
+                Username = user.Username
             },
-            Token = GenerateToken(user.UserName, request.RememberMe ? longExpireMinutes : shortExpireMinutes)
+            Token = GenerateToken(user.Username, request.RememberMe ? longExpireMinutes : shortExpireMinutes)
         };
 
         return response;
@@ -49,7 +51,7 @@ public class UsersService : IUsersService
         var hmac = new HMACSHA256();
         var kek = Convert.ToBase64String(hmac.Key);
 
-        var symmetricKey = Convert.FromBase64String(_jwtSecretKey);
+        var symmetricKey = Encoding.ASCII.GetBytes(_jwtSecretKey);
         var tokenHandler = new JwtSecurityTokenHandler();
 
         var now = DateTime.UtcNow;
@@ -57,7 +59,7 @@ public class UsersService : IUsersService
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.Name, username)
+                new Claim(nameof(User.Username), username)
             }),
 
             Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),

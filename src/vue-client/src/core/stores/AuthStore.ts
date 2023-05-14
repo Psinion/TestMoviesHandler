@@ -28,11 +28,11 @@ export const useAuthStore = defineStore('authStore', () => {
         'POST',
         requestData
       );
-
       user.value = {
         username: response.user.username
       };
       token.value = response.token;
+      console.log(token.value);
       if (rememberMe) {
         localStorage.setItem('user', JSON.stringify(user.value));
         localStorage.setItem('token', token.value);
@@ -52,8 +52,8 @@ export const useAuthStore = defineStore('authStore', () => {
   };
 
   return {
-    token,
     user,
+    token,
     returnUrl,
     isAuthenticated,
     login,

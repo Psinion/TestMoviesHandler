@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Mvs.Application.Middlewares;
-using Mvs.Data.Contexts;
+using Mvs.Data.Access.EF.Contexts;
 
 namespace Mvs.Application.StartupConfiguration;
 

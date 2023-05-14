@@ -6,27 +6,20 @@
 </template>
 
 <script lang="ts">
+import { mainRequestor, requestor } from '../utils/requestor';
 
 export default {
   data() {
     return {
-      description: this.$mainConfig.apiBaseUrl,
-    }
+      description: this.$mainConfig.apiBaseUrl
+    };
   },
   methods: {
     async simpleFetch() {
-      const response = await fetch(`${this.$mainConfig.apiBaseUrl}/api/movies/testmethod`);
-      const data = response.json();
+      const response = await mainRequestor.get<string>('api/movies/testmethod');
       //const movies = <Movie[]>data;
-      console.log(data);
+      console.log(response);
     }
   }
-}
-
-interface Movie {
-  id: Number,
-  description: String,
-  genre: Number,
-  title: String
-}
+};
 </script>

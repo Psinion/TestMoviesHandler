@@ -1,5 +1,6 @@
 import { mainConfig } from '@/mainConfig';
 import { Notify } from 'quasar';
+import { useAuthStore } from '../stores/AuthStore';
 
 type BodyMethodType = 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS';
 type MethodType = BodyMethodType | 'GET';
@@ -14,6 +15,34 @@ export class requestor {
 
   constructor(apiUrl?: string) {
     this.baseUrl = apiUrl ?? mainConfig.apiBaseUrl;
+  }
+
+  async get<TResponse>(input: RequestInfo, extraHeaders?: IHeader[]): Promise<TResponse> {
+    if (!extraHeaders) {
+      extraHeaders = [];
+    }
+
+    extraHeaders = this.pushAuthHeader(extraHeaders);
+
+    return await this.request<TResponse>(input, 'GET', extraHeaders);
+  }
+
+  async post<TRequest, TResponse>(
+    input: RequestInfo,
+    method: BodyMethodType,
+    body: TRequest,
+    extraHeaders?: IHeader[]
+  ): Promise<TResponse> {
+    const bodyParam = JSON.stringify(body);
+
+    if (!extraHeaders) {
+      extraHeaders = [];
+    }
+
+    extraHeaders.push({ key: 'Content-type', value: 'application/json' });
+    extraHeaders = this.pushAuthHeader(extraHeaders);
+
+    return await this.request<TResponse>(input, method, extraHeaders, bodyParam);
   }
 
   private async request<TResponse>(
@@ -59,25 +88,13 @@ export class requestor {
     }
   }
 
-  async get<TResponse>(input: RequestInfo, extraHeaders?: IHeader[]): Promise<TResponse> {
-    return await this.request<TResponse>(input, 'GET', extraHeaders);
-  }
-
-  async post<TRequest, TResponse>(
-    input: RequestInfo,
-    method: BodyMethodType,
-    body: TRequest,
-    extraHeaders?: IHeader[]
-  ): Promise<TResponse> {
-    const bodyParam = JSON.stringify(body);
-
-    if (!extraHeaders) {
-      extraHeaders = [];
+  private pushAuthHeader(extraHeaders: IHeader[]): IHeader[] {
+    const userStore = useAuthStore();
+    const token = userStore.token;
+    if (token) {
+      extraHeaders.push({ key: 'AuthToken', value: token });
     }
-
-    extraHeaders.push({ key: 'Content-type', value: 'application/json' });
-
-    return await this.request<TResponse>(input, method, extraHeaders, bodyParam);
+    return extraHeaders;
   }
 }
 

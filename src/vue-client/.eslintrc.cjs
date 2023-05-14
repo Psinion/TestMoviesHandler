@@ -68,6 +68,9 @@ module.exports = {
     // does not work with type definitions
     'no-unused-vars': 'off',
 
+    // Не подсвечивает просто throw в блоке catch
+    'no-useless-catch': 'off',
+
     // allow debugger during development only
     'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
   }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Mvs.Domain.Entities;
 
-namespace Mvs.Data.Contexts;
+namespace Mvs.Data.Access.EF.Contexts;
 
 public class MoviesDbContext : DbContext
 {

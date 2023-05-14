@@ -6,7 +6,7 @@ namespace Mvs.Domain.Entities;
 public class User : Entity
 {
     [Column(TypeName = "nvarchar(50)")]
-    public string UserName { get; set; }
+    public string Username { get; set; }
 
     [Column(TypeName = "nvarchar(50)")]
     public string Password { get; set; }

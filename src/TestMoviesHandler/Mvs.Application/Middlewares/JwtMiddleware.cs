@@ -1,7 +1,9 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using Mvs.Data.Repositories;
+using Mvs.Domain.Entities;
 
 namespace Mvs.Application.Middlewares;
 
@@ -45,13 +47,14 @@ public class JwtMiddleware
             }, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
-            var userId = int.Parse(jwtToken.Claims.First(x => x.Type == "id").Value);
+            var userName = jwtToken.Claims.First(x => x.Type == nameof(User.Username)).Value;
 
-            context.Items["User"] = usersRepository.FindByIdAsync(userId);
+            var user = usersRepository.GetByUsername(userName).Result;
+            context.Items["User"] = user;
         }
-        catch
+        catch(Exception ex)
         {
-            
+                        
         }
     }
 }
