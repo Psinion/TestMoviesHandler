@@ -12,12 +12,19 @@
           />
 
           <q-input
-            type="password"
+            :dense="true"
+            :type="isPassword ? 'password' : 'text'"
             v-model="password"
             label="Пароль"
             lazy-rules
             :rules="[val => (val !== null && val !== '') || 'Обязательное поле']"
-          />
+          >
+            <q-icon
+              :name="isPassword ? 'visibility_off' : 'visibility'"
+              class="cursor-pointer"
+              @click="isPassword = !isPassword"
+            />
+          </q-input>
 
           <q-checkbox v-model="rememberMe" label="Запомнить меня" />
 
@@ -53,6 +60,8 @@ export default {
   },
   data() {
     return {
+      isPassword: true,
+      
       username: '',
       password: '',
       rememberMe: false,
