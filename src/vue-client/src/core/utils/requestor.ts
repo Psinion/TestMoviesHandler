@@ -1,6 +1,6 @@
 import { mainConfig } from '@/mainConfig';
+import { useAuthStore } from '@/modules/auth/authStore';
 import { Notify } from 'quasar';
-import { useAuthStore } from '../stores/AuthStore';
 
 type BodyMethodType = 'POST' | 'PUT' | 'PATCH' | 'DELETE' | 'HEAD' | 'OPTIONS';
 type MethodType = BodyMethodType | 'GET';
@@ -27,10 +27,11 @@ export class requestor {
     return await this.request<TResponse>(input, 'GET', extraHeaders);
   }
 
-  async post<TRequest, TResponse>(
+  async post<TResponse>(
     input: RequestInfo,
     method: BodyMethodType,
-    body: TRequest,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    body?: any,
     extraHeaders?: IHeader[]
   ): Promise<TResponse> {
     const bodyParam = JSON.stringify(body);

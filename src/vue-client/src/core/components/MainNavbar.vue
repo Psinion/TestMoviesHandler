@@ -8,7 +8,14 @@
         Title
       </q-toolbar-title>
       <q-space />
-      <q-btn v-if="user != null" dense flat no-wrap :label="user?.username" icon-right="las la-user">
+      <q-btn
+        v-if="user != null"
+        dense
+        flat
+        no-wrap
+        :label="user?.username"
+        icon-right="las la-user"
+      >
         <q-menu fit auto-close>
           <q-list dense>
             <q-item clickable @click="logout">
@@ -22,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { useAuthStore } from '../stores/AuthStore';
+import { useAuthStore } from '../../modules/auth/authStore';
 import { storeToRefs } from 'pinia';
 
 export default {
