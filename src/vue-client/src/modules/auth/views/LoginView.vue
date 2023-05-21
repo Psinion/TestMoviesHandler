@@ -37,7 +37,7 @@
 </template>
 
 <script lang="ts">
-import { useAuthStore } from '@/core/stores/AuthStore';
+import { useAuthStore } from '@/modules/auth/authStore';
 import type { QForm } from 'quasar';
 import { ref } from 'vue';
 

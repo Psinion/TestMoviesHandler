@@ -1,11 +1,14 @@
 import { createWebHistory, createRouter } from 'vue-router';
 import routes from './router';
-import { useAuthStore } from '@/core/stores/AuthStore';
+import { useAuthStore } from '@/modules/auth/authStore';
+import { fetchAuthDataMiddleware } from './middlewares/fetchAuthData';
 
 const router = createRouter({
   history: createWebHistory(),
   routes
 });
+
+router.beforeEach(fetchAuthDataMiddleware);
 
 router.beforeEach(async to => {
   const auth = useAuthStore();
