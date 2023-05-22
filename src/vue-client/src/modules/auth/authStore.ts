@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('authStore', () => {
   const user = ref<IUser | null>(JSON.parse(localStorage.getItem('user') as string) as IUser);
   const token = ref<string | null>(localStorage.getItem('token'));
   const returnUrl = ref<string | null>(null);
-  const userPermissions = ref<Permissions[] | null>(null);
+  const userPermissions = ref<Record<string, boolean | undefined> | null>(null);
 
   const isAuthenticated = computed(() => token.value != null);
 
@@ -62,17 +62,21 @@ export const useAuthStore = defineStore('authStore', () => {
       try {
         const response = await mainRequestor.post<UserPermissionDto>(`${endpoint}`, 'POST');
 
-        // TODO: Написать юнит тест.
-        const permissions = response.permissions.reduce(
-          (acc: Permissions[], current: string) => {
-            acc.push(current as Permissions);
-            return acc;
-          },
-          [Permissions.LoggedIn]
-        );
+        // TODO: Написать юнит тест для проверки правильности прав на клиенте и сервере.
+        const permissions = response.permissions;
 
-        console.log(permissions);
-        userPermissions.value = permissions;
+        userPermissions.value = {};
+
+        for (const perm in Permissions) {
+          userPermissions.value[perm] = false;
+        }
+        userPermissions.value[Permissions.LoggedIn] = true;
+
+        for (const perm of permissions) {
+          userPermissions.value[perm] = true;
+        }
+
+        console.log(userPermissions.value);
       } catch (error) {
         console.log(error);
       }
@@ -84,7 +88,9 @@ export const useAuthStore = defineStore('authStore', () => {
       return false;
     }
 
-    return permissions.every(permission => userPermissions.value?.includes(permission));
+    return permissions.every(permission =>
+      userPermissions.value ? userPermissions.value[permission] : false
+    );
   };
 
   return {
