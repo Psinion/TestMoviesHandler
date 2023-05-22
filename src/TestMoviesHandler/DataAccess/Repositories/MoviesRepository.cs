@@ -12,11 +12,11 @@ public class MoviesRepository : GenericRepository<Movie>, IMoviesRepository
 
     }
 
-    public virtual async Task<List<Movie>> GetAllWithActorsAsync() => await _dbSet.Include(x => x.Actors).ToListAsync();
+    public virtual async Task<List<Movie>> GetAllWithActorsAsync() => await DbSet.Include(x => x.Actors).ToListAsync();
 
-    public async Task<Movie> GetByIdWithActorsAsync(int id)
+    public async Task<Movie?> GetByIdWithActorsAsync(int id)
     {
-        return await _dbSet
+        return await DbSet
             .Include(x => x.Actors)
             .FirstOrDefaultAsync(x => x.Id == id);
     }

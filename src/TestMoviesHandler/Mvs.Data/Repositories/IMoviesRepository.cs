@@ -6,5 +6,5 @@ public interface IMoviesRepository : IGenericRepository<Movie>
 { 
     Task<List<Movie>> GetAllWithActorsAsync();
 
-    Task<Movie> GetByIdWithActorsAsync(int id);
+    Task<Movie?> GetByIdWithActorsAsync(int id);
 }

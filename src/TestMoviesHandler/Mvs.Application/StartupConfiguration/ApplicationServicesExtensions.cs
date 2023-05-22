@@ -13,7 +13,9 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IMoviesRepository, MoviesRepository>();
         services.AddScoped<IUsersRepository, UsersRepository>();
 
+        services.AddSingleton<ITokenService, TokenService>();
         services.AddScoped<IUsersService, UsersService>();
+
         return services;
     }
 }

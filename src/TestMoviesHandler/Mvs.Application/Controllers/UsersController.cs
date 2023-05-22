@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Mvs.Data.Services;
+using Mvs.Data.Services.Tokens;
 using Mvs.Domain.DTOs;
 
 namespace Mvs.Application.Controllers;
@@ -9,10 +10,12 @@ namespace Mvs.Application.Controllers;
 public class UsersController : Controller
 {
     private readonly IUsersService _usersService;
+    private readonly ITokenService _tokenService;
 
-    public UsersController(IUsersService usersService)
+    public UsersController(IUsersService usersService, ITokenService tokenService)
     {
         _usersService = usersService;
+        _tokenService = tokenService;
     }
 
     [HttpPost]
@@ -21,11 +24,45 @@ public class UsersController : Controller
     {
         var response = await _usersService.Authenticate(authRequest);
 
-        if (response == null)
+        if (response?.User == null)
         {
             return BadRequest("IncorrectUserAuth");
         }
 
+        var tokensResult = _tokenService.GenerateTokens(new TokenInfo()
+            {
+                Username = response.User.Username,
+            },
+            authRequest.RememberMe
+        );
+
+        tokensResult.Match<ActionResult<UserAuthResponseDto?>>(
+            success =>
+            {
+                response.AccessToken = success.accessToken;
+                response.RefreshToken = success.refreshToken;
+
+                return response;
+            },
+            failure => BadRequest(failure)
+        );
+
         return response;
+    }
+
+    [HttpPost]
+    [Route("permissions")]
+    public async Task<ActionResult<UserPermissionsResponseDto?>> GetPermissions()
+    {
+        var permissions = new UserPermissionsResponseDto()
+        {
+            Permissions = new List<string>()
+            {
+                "kek1",
+                "kek2"
+            }
+        };
+
+        return permissions;
     }
 }
