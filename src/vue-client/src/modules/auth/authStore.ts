@@ -6,13 +6,13 @@ import type { IUserAuthRequestDto } from '@/modules/auth/dtos/IUserAuthRequestDt
 import { mainRequestor } from '@/core/utils/requestor';
 import router from '@/router';
 import type { IUser } from '../../core/models/IUser';
-import type { PermissionsEnum } from './permissionsEnum';
+import { Permissions } from './permissions';
 
 export const useAuthStore = defineStore('authStore', () => {
   const user = ref<IUser | null>(JSON.parse(localStorage.getItem('user') as string) as IUser);
   const token = ref<string | null>(localStorage.getItem('token'));
   const returnUrl = ref<string | null>(null);
-  const userPermissions = ref<PermissionsEnum[] | null>(null);
+  const userPermissions = ref<Permissions[] | null>(null);
 
   const isAuthenticated = computed(() => token.value != null);
 
@@ -51,7 +51,7 @@ export const useAuthStore = defineStore('authStore', () => {
     router.push({ name: 'Login' });
   };
 
-  const getUserPermissions = async (): Promise<void> => {
+  const fetchUserPermissions = async (): Promise<void> => {
     if (userPermissions.value) {
       return;
     }
@@ -62,17 +62,29 @@ export const useAuthStore = defineStore('authStore', () => {
       try {
         const response = await mainRequestor.post<UserPermissionDto>(`${endpoint}`, 'POST');
 
-        // https://stackoverflow.com/questions/48483534/converting-string-array-to-enum-in-typescript
-        const permissions = response.permissions.reduce((acc, current) => {
-          acc[current] = current;
-          return acc;
-        }, Object.create(null));
+        // TODO: Написать юнит тест.
+        const permissions = response.permissions.reduce(
+          (acc: Permissions[], current: string) => {
+            acc.push(current as Permissions);
+            return acc;
+          },
+          [Permissions.LoggedIn]
+        );
 
+        console.log(permissions);
         userPermissions.value = permissions;
       } catch (error) {
         console.log(error);
       }
     }
+  };
+
+  const checkPermission = (permissions: Permissions[]) => {
+    if (!userPermissions.value) {
+      return false;
+    }
+
+    return permissions.every(permission => userPermissions.value?.includes(permission));
   };
 
   return {
@@ -82,6 +94,7 @@ export const useAuthStore = defineStore('authStore', () => {
     isAuthenticated,
     login,
     logout,
-    getUserPermissions
+    fetchUserPermissions,
+    checkPermission
   };
 });

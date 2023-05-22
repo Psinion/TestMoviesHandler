@@ -1,48 +1,29 @@
-export enum Rules {
-  Guest, // Маршрут доступен без аутентификации.
-  NeedAuth // Маршрут доступен только будучи аутентифицированным.
-}
+import { Permissions } from '@/modules/auth/permissions';
+import { RoutesNames } from './routesNames';
 
 const routes = [
   {
     path: '/',
-    name: 'MainLayout',
+    name: RoutesNames.MainLayout,
     component: () => import('@/core/layouts/MainLayout.vue'),
-    meta: {
-      Rule: Rules.Guest
-    },
     children: [
       {
         path: '',
-        name: 'Index',
+        name: RoutesNames.Index,
         component: () => import('@/core/views/IndexView.vue'),
         meta: {
-          Rule: Rules.NeedAuth
+          permissions: [Permissions.LoggedIn]
         }
       },
       {
         path: '/error',
-        name: 'Error',
-        component: () => import('@/core/views/ErrorView.vue'),
-        meta: {
-          Rule: Rules.Guest
-        }
+        name: RoutesNames.Error,
+        component: () => import('@/core/views/ErrorView.vue')
       },
       {
         path: '/login',
-        name: 'Login',
-        component: () => import('@/modules/auth/views/LoginView.vue'),
-        meta: {
-          Rule: Rules.Guest
-        }
-      },
-      {
-        path: '/login',
-        name: 'Login',
-        component: () => import('@/modules/auth/views/LoginView.vue'),
-        meta: {
-          Rule: Rules.Guest
-        }
+        name: RoutesNames.Login,
+        component: () => import('@/modules/auth/views/LoginView.vue')
       }
     ]
   },
