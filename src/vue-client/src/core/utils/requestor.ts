@@ -10,6 +10,17 @@ export interface IHeader {
   value: string;
 }
 
+export interface IRequestGetParams {
+  extraHeaders?: IHeader[];
+  withCredentials?: boolean;
+}
+
+export interface IRequestPostParams {
+  extraHeaders?: IHeader[];
+  withCredentials?: boolean;
+  body?: any;
+}
+
 export class requestor {
   private baseUrl: string;
 
@@ -17,40 +28,51 @@ export class requestor {
     this.baseUrl = apiUrl ?? mainConfig.apiBaseUrl;
   }
 
-  async get<TResponse>(input: RequestInfo, extraHeaders?: IHeader[]): Promise<TResponse> {
-    if (!extraHeaders) {
-      extraHeaders = [];
+  async get<TResponse>(input: RequestInfo, params: IRequestGetParams = {}): Promise<TResponse> {
+    if (!params.extraHeaders) {
+      params.extraHeaders = [];
     }
 
-    extraHeaders = this.pushAuthHeader(extraHeaders);
+    params.extraHeaders = this.pushAuthHeader(params.extraHeaders);
 
-    return await this.request<TResponse>(input, 'GET', extraHeaders);
+    return await this.request<TResponse>(
+      input,
+      'GET',
+      undefined,
+      params.extraHeaders,
+      params.withCredentials
+    );
   }
 
   async post<TResponse>(
     input: RequestInfo,
     method: BodyMethodType,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    body?: any,
-    extraHeaders?: IHeader[]
+    params: IRequestPostParams = {}
   ): Promise<TResponse> {
-    const bodyParam = JSON.stringify(body);
+    const bodyParam = JSON.stringify(params.body);
 
-    if (!extraHeaders) {
-      extraHeaders = [];
+    if (!params.extraHeaders) {
+      params.extraHeaders = [];
     }
 
-    extraHeaders.push({ key: 'Content-type', value: 'application/json' });
-    extraHeaders = this.pushAuthHeader(extraHeaders);
+    params.extraHeaders.push({ key: 'Content-type', value: 'application/json' });
+    params.extraHeaders = this.pushAuthHeader(params.extraHeaders);
 
-    return await this.request<TResponse>(input, method, extraHeaders, bodyParam);
+    return await this.request<TResponse>(
+      input,
+      method,
+      bodyParam,
+      params.extraHeaders,
+      params.withCredentials
+    );
   }
 
   private async request<TResponse>(
     input: RequestInfo,
     method: MethodType,
+    body?: string,
     extraHeaders?: IHeader[],
-    body?: string
+    withCredentials: boolean = false
   ): Promise<TResponse> {
     const headers: Record<string, string> = {};
 
@@ -58,9 +80,10 @@ export class requestor {
       extraHeaders.forEach(x => (headers[x.key] = x.value));
     }
 
-    const params = {
+    const params: RequestInit = {
       method,
       headers,
+      credentials: withCredentials ? 'include' : 'omit',
       body
     };
 

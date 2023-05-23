@@ -64,6 +64,10 @@ module.exports = {
     // in plain CommonJS modules, you can't use `import foo = require('foo')` to pass this rule, so it has to be disabled
     '@typescript-eslint/no-var-requires': 'off',
 
+    // Не обязательность проставления типов у аргументов и свойств.
+    // Думается, у аргументов функции всегда должен быть указан тип.
+    "@typescript-eslint/no-inferrable-types": [true, "ignore-params"],
+
     // The core 'no-unused-vars' rules (in the eslint:recommended ruleset)
     // does not work with type definitions
     'no-unused-vars': 'off',

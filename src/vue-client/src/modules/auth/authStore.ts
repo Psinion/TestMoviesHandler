@@ -26,15 +26,14 @@ export const useAuthStore = defineStore('authStore', () => {
     };
 
     try {
-      const response = await mainRequestor.post<IUserAuthResponseDto>(
-        `${endpoint}`,
-        'POST',
-        requestData
-      );
+      const response = await mainRequestor.post<IUserAuthResponseDto>(`${endpoint}`, 'POST', {
+        body: requestData,
+        withCredentials: true
+      });
       user.value = {
         username: response.user.username
       };
-      token.value = response.refreshToken;
+      token.value = response.accessToken;
       localStorage.setItem('user', JSON.stringify(user.value));
       localStorage.setItem('token', token.value);
       router.push(returnUrl.value ?? { name: 'Index' });

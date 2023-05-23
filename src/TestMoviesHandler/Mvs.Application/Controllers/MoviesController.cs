@@ -22,9 +22,11 @@ public class MoviesController : ControllerBase
     }
 
     [CustomAuthorize]
-    [HttpGet("TestMethod")]
+    [HttpPost("TestMethod")]
     public async Task<ActionResult<string>> GetTestMethod()
     {
+        var refreshToken = Request.Cookies["refreshToken"];
+
         return "kekes";
     }
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.EntityFrameworkCore;
 using Mvs.Application.Middlewares;
 using Mvs.Data.Access.EF.Contexts;
 
@@ -32,7 +33,8 @@ public class Startup
                 builder
                     .WithOrigins(clientUrl)
                     .AllowAnyMethod()
-                    .AllowAnyHeader();
+                    .AllowAnyHeader()
+                    .AllowCredentials();
             });
         });
 
@@ -57,6 +59,13 @@ public class Startup
         }
 
         app.UseRouting();
+
+        app.UseCookiePolicy(new CookiePolicyOptions()
+        {
+            MinimumSameSitePolicy = SameSiteMode.Strict,
+            HttpOnly = HttpOnlyPolicy.Always,
+            Secure = CookieSecurePolicy.Always
+        });
 
         app.UseCors();
 

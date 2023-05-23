@@ -17,7 +17,9 @@ export default {
   },
   methods: {
     async simpleFetch() {
-      const response = await mainRequestor.get<string>('api/movies/testmethod');
+      const response = await mainRequestor.post<string>('api/movies/testmethod', 'POST', {
+        withCredentials: true
+      });
       console.log(response);
     }
   }

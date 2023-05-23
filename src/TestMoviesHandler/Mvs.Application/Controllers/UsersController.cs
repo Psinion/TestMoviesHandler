@@ -34,13 +34,20 @@ public class UsersController : Controller
                 Username = response.User.Username,
             },
             authRequest.RememberMe
-        );
-
+        ); 
+        
         tokensResult.Match<ActionResult<UserAuthResponseDto?>>(
             success =>
             {
+                CookieOptions option = new CookieOptions()
+                {
+                    // TODO: Вытащить эти цифры в единый конфиг.
+                    Expires = DateTime.Now.AddMinutes(108000)
+                };
+
+                Response.Cookies.Append("refreshToken", success.refreshToken, option);
+
                 response.AccessToken = success.accessToken;
-                response.RefreshToken = success.refreshToken;
 
                 return response;
             },
