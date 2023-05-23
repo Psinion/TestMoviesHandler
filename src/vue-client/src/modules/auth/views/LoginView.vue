@@ -99,7 +99,6 @@ export default {
 .auth-container {
   align-items: center;
   justify-content: center;
-  font-family: 'Roboto';
 }
 
 .auth-form {
