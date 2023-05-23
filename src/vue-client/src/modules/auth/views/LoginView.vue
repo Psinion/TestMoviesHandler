@@ -1,46 +1,44 @@
 <template>
-  <body>
-    <q-page class="row auth-container">
-      <q-form ref="loginForm" @submit="login">
-        <span class="row justify-center auth-header">Авторизация</span>
-        <div class="auth-form">
-          <q-input
-            v-model="username"
-            label="Логин"
-            lazy-rules
-            :rules="[val => (val && val.length > 0) || 'Обязательное поле']"
+  <q-page class="row auth-container">
+    <q-form ref="loginForm" @submit="login">
+      <span class="row justify-center auth-header">Авторизация</span>
+      <div class="auth-form">
+        <q-input
+          v-model="username"
+          label="Логин"
+          lazy-rules
+          :rules="[val => (val && val.length > 0) || 'Обязательное поле']"
+        />
+
+        <q-input
+          :dense="true"
+          :type="isPassword ? 'password' : 'text'"
+          v-model="password"
+          label="Пароль"
+          lazy-rules
+          :rules="[val => (val !== null && val !== '') || 'Обязательное поле']"
+        >
+          <q-icon
+            :name="isPassword ? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPassword = !isPassword"
           />
+        </q-input>
 
-          <q-input
-            :dense="true"
-            :type="isPassword ? 'password' : 'text'"
-            v-model="password"
-            label="Пароль"
-            lazy-rules
-            :rules="[val => (val !== null && val !== '') || 'Обязательное поле']"
-          >
-            <q-icon
-              :name="isPassword ? 'visibility_off' : 'visibility'"
-              class="cursor-pointer"
-              @click="isPassword = !isPassword"
-            />
-          </q-input>
+        <q-checkbox v-model="rememberMe" label="Запомнить меня" />
 
-          <q-checkbox v-model="rememberMe" label="Запомнить меня" />
-
-          <div class="error-message-container">
-            <transition name="fade">
-              <span class="error-message" v-if="errorMessage.length > 0">{{ errorMessage }}</span>
-            </transition>
-          </div>
-
-          <div class="action-buttons">
-            <q-btn class="full-width" label="Войти" type="submit" color="primary" />
-          </div>
+        <div class="error-message-container">
+          <transition name="fade">
+            <span class="error-message" v-if="errorMessage.length > 0">{{ errorMessage }}</span>
+          </transition>
         </div>
-      </q-form>
-    </q-page>
-  </body>
+
+        <div class="action-buttons">
+          <q-btn class="full-width" label="Войти" type="submit" color="primary" />
+        </div>
+      </div>
+    </q-form>
+  </q-page>
 </template>
 
 <script lang="ts">
@@ -61,7 +59,7 @@ export default {
   data() {
     return {
       isPassword: true,
-      
+
       username: '',
       password: '',
       rememberMe: false,
@@ -98,13 +96,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-* {
-  font-family: 'Roboto';
-}
-
 .auth-container {
   align-items: center;
   justify-content: center;
+  font-family: 'Roboto';
 }
 
 .auth-form {

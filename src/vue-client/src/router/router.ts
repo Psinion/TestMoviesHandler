@@ -21,7 +21,8 @@ const routes = [
         name: RoutesNames.Error,
         component: () => import('@/core/views/ErrorView.vue'),
         meta: {
-          title: 'Ошибка'
+          title: 'Ошибка',
+          permissions: [Permissions.LoggedIn]
         }
       },
       {
@@ -33,6 +34,12 @@ const routes = [
         }
       }
     ]
+  },
+  {
+    path: '/',
+    name: 'BlankLayout',
+    component: () => import('@/core/layouts/BlankLayout.vue'),
+    children: []
   },
   {
     path: '/test',

@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <main-navbar/>
+    <main-navbar />
 
     <q-page-container>
       <router-view />
@@ -15,5 +15,5 @@ export default {
   components: {
     MainNavbar
   }
-}
+};
 </script>

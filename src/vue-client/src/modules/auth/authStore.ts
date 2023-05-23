@@ -34,7 +34,7 @@ export const useAuthStore = defineStore('authStore', () => {
       user.value = {
         username: response.user.username
       };
-      token.value = response.token;
+      token.value = response.refreshToken;
       localStorage.setItem('user', JSON.stringify(user.value));
       localStorage.setItem('token', token.value);
       router.push(returnUrl.value ?? { name: 'Index' });
