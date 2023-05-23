@@ -1,4 +1,4 @@
-import { mainConfig } from '@/mainConfig';
+import { mainConfig } from '@/main.config';
 import { useAuthStore } from '@/modules/auth/authStore';
 import { Notify } from 'quasar';
 

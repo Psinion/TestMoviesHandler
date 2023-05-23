@@ -12,18 +12,25 @@ const routes = [
         name: RoutesNames.Index,
         component: () => import('@/core/views/IndexView.vue'),
         meta: {
+          title: 'Основная страница',
           permissions: [Permissions.LoggedIn]
         }
       },
       {
         path: '/error',
         name: RoutesNames.Error,
-        component: () => import('@/core/views/ErrorView.vue')
+        component: () => import('@/core/views/ErrorView.vue'),
+        meta: {
+          title: 'Ошибка'
+        }
       },
       {
         path: '/login',
         name: RoutesNames.Login,
-        component: () => import('@/modules/auth/views/LoginView.vue')
+        component: () => import('@/modules/auth/views/LoginView.vue'),
+        meta: {
+          title: 'Авторизация'
+        }
       }
     ]
   },

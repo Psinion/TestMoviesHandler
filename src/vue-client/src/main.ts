@@ -3,7 +3,7 @@ import App from './App.vue';
 import { Notify, Quasar } from 'quasar';
 import router from './router/index';
 
-import mainConfig from './mainConfig';
+import mainConfig from './main.config';
 import { createPinia } from 'pinia';
 
 // Devextreme themes
