@@ -7,6 +7,12 @@ import { quasar } from '@quasar/vite-plugin';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  server: {
+    https: {
+      key: 'certs/localhost-key.pem',
+      cert: 'certs/localhost.pem'
+    }
+  },
   plugins: [
     vue(),
     vueJsx(),
