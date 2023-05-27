@@ -1,16 +1,17 @@
 <template>
+  <loading-spinner />
   <router-view />
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
 import { useAuthStore } from './modules/auth/authStore';
+import LoadingSpinner from './core/components/LoadingSpinner.vue';
+import { onBeforeMount } from 'vue';
 
-export default {
-  async beforeMount() {
-    const authStore = useAuthStore();
-    if (authStore.isAuthenticated) {
-      await authStore.checkAuth();
-    }
+onBeforeMount(async () => {
+  const authStore = useAuthStore();
+  if (authStore.isAuthenticated) {
+    await authStore.checkAuth();
   }
-};
+});
 </script>
