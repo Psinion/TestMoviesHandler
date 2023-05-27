@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Mvs.Application.Controllers.Base;
+using Mvs.Application.Middlewares;
 using Mvs.Data.Services;
 using Mvs.Data.Services.Tokens;
 using Mvs.Domain.DTOs;
@@ -7,12 +9,12 @@ namespace Mvs.Application.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class UsersController : Controller
+public class UsersController : ConnectedController
 {
     private readonly IUsersService _usersService;
     private readonly ITokenService _tokenService;
 
-    public UsersController(IUsersService usersService, ITokenService tokenService)
+    public UsersController(IHttpContextAccessor httpContextAccessor, IUsersService usersService, ITokenService tokenService) : base(httpContextAccessor)
     {
         _usersService = usersService;
         _tokenService = tokenService;
@@ -36,7 +38,7 @@ public class UsersController : Controller
             authRequest.RememberMe
         ); 
         
-        tokensResult.Match<ActionResult<UserAuthResponseDto?>>(
+        return tokensResult.Match<ActionResult<UserAuthResponseDto?>>(
             success =>
             {
                 CookieOptions option = new CookieOptions()
@@ -47,14 +49,49 @@ public class UsersController : Controller
 
                 Response.Cookies.Append("refreshToken", success.refreshToken, option);
 
-                response.AccessToken = success.accessToken;
+                response.Token = success.accessToken;
 
                 return response;
             },
             failure => BadRequest(failure)
         );
+    }
 
-        return response;
+    [CustomAuthorize]
+    [HttpGet]
+    [Route("refresh")]
+    public async Task<ActionResult<UserAuthResponseDto?>> Refresh()
+    {
+        var tokensResult = _tokenService.GenerateTokens(new TokenInfo()
+            {
+                Username = CurrentUser.Username,
+            }
+        );
+
+        return tokensResult.Match<ActionResult<UserAuthResponseDto?>>(
+            success =>
+            {
+                CookieOptions option = new CookieOptions()
+                {
+                    // TODO: Вытащить эти цифры в единый конфиг.
+                    Expires = DateTime.Now.AddMinutes(108000)
+                };
+
+                Response.Cookies.Append("refreshToken", success.refreshToken, option);
+
+                var response = new UserAuthResponseDto()
+                {
+                    User = new UserDto()
+                    {
+                        Username = CurrentUser.Username
+                    },
+                    Token = success.accessToken
+                };
+
+                return response;
+            },
+            failure => BadRequest(failure)
+        );
     }
 
     [HttpPost]

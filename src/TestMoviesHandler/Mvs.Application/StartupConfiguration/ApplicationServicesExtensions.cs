@@ -9,6 +9,8 @@ public static class ApplicationServicesExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
         services.AddScoped<IActorsRepository, ActorsRepository>();
         services.AddScoped<IMoviesRepository, MoviesRepository>();
         services.AddScoped<IUsersRepository, UsersRepository>();

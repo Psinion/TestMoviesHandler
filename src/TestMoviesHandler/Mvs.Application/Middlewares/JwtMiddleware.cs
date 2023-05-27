@@ -20,7 +20,8 @@ public class JwtMiddleware
 
     public async Task Invoke(HttpContext context, IUsersRepository usersRepository)
     {
-        var token = context.Request.Headers["AuthToken"].FirstOrDefault()?.Split(" ").Last();
+        var token = context.Request.Headers["AuthToken"].FirstOrDefault()?.Split(" ").Last() 
+                    ?? context.Request.Cookies["RefreshToken"];
 
         if (token != null)
         {
@@ -30,7 +31,7 @@ public class JwtMiddleware
         await _next(context);
     }
 
-    public void AttachUserToContext(HttpContext context, IUsersRepository usersRepository, string token)
+    public bool AttachUserToContext(HttpContext context, IUsersRepository usersRepository, string token)
     {
         try
         {
@@ -54,7 +55,11 @@ public class JwtMiddleware
         }
         catch(Exception ex)
         {
-                        
+            context.Response.Clear();
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return false;
         }
+
+        return true;
     }
 }

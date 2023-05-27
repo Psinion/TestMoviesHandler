@@ -1,20 +1,22 @@
 import { defineStore } from 'pinia';
 import { computed, ref } from 'vue';
-import type { IUserAuthResponseDto } from '@/modules/auth/dtos/IUserAuthResponseDto';
-import type { UserPermissionDto } from './dtos/userPermissionDto';
-import type { IUserAuthRequestDto } from '@/modules/auth/dtos/IUserAuthRequestDto';
+import type { AuthResponse } from '@/modules/auth/models/responses/authResponse';
+import type { UserPermissionDto } from './models/userPermissionDto';
+import type { IUserAuthRequestDto } from '@/modules/auth/models/IUserAuthRequestDto';
 import { mainRequestor } from '@/core/utils/requestor';
 import router from '@/router';
 import type { IUser } from '../../core/models/IUser';
 import { Permissions } from './permissions';
+import { mainConfig } from '@/main.config';
+import { RoutesNames } from '@/router/routesNames';
 
 export const useAuthStore = defineStore('authStore', () => {
   const user = ref<IUser | null>(JSON.parse(localStorage.getItem('user') as string) as IUser);
-  const token = ref<string | null>(localStorage.getItem('token'));
+  const accessToken = ref<string | null>(localStorage.getItem('token'));
   const returnUrl = ref<string | null>(null);
   const userPermissions = ref<Record<string, boolean | undefined> | null>(null);
 
-  const isAuthenticated = computed(() => token.value != null);
+  const isAuthenticated = computed(() => accessToken.value != null);
 
   const login = async (username: string, password: string, rememberMe: boolean): Promise<void> => {
     const endpoint = 'users/authenticate';
@@ -26,16 +28,15 @@ export const useAuthStore = defineStore('authStore', () => {
     };
 
     try {
-      const response = await mainRequestor.post<IUserAuthResponseDto>(`${endpoint}`, 'POST', {
+      const response = await mainRequestor.post<AuthResponse>(`${endpoint}`, 'POST', {
         body: requestData,
         withCredentials: true
       });
       user.value = {
         username: response.user.username
       };
-      token.value = response.accessToken;
       localStorage.setItem('user', JSON.stringify(user.value));
-      localStorage.setItem('token', token.value);
+      saveAccessToken(response.token);
       router.push(returnUrl.value ?? { name: 'Index' });
     } catch (error) {
       throw error;
@@ -44,10 +45,40 @@ export const useAuthStore = defineStore('authStore', () => {
 
   const logout = (): void => {
     user.value = null;
-    token.value = null;
+    accessToken.value = null;
     localStorage.removeItem('user');
     localStorage.removeItem('token');
-    router.push({ name: 'Login' });
+    router.push(RoutesNames.Login);
+  };
+
+  const checkAuth = async (): Promise<void> => {
+    const endpoint = 'users/refresh';
+    const refreshingTokenPromise = fetch(`${mainConfig.apiBaseUrl}/${endpoint}`, {
+      method: 'GET',
+      headers: {
+        'Content-type': 'application/json'
+      },
+      credentials: 'include'
+    })
+      .then(response => {
+        if (response.status == 401) {
+          throw new Error();
+        }
+        return response.json();
+      })
+      .then((data: AuthResponse) => {
+        saveAccessToken(data.token);
+      })
+      .catch(error => {
+        logout();
+        throw error;
+      });
+    return refreshingTokenPromise;
+  };
+
+  const saveAccessToken = (token: string): void => {
+    accessToken.value = token;
+    localStorage.setItem('token', token);
   };
 
   const fetchUserPermissions = async (): Promise<void> => {
@@ -83,6 +114,10 @@ export const useAuthStore = defineStore('authStore', () => {
   };
 
   const checkPermission = (permissions: Permissions[]) => {
+    if (!isAuthenticated) {
+      return;
+    }
+
     if (!userPermissions.value) {
       return false;
     }
@@ -94,11 +129,12 @@ export const useAuthStore = defineStore('authStore', () => {
 
   return {
     user,
-    token,
+    accessToken,
     returnUrl,
     isAuthenticated,
     login,
     logout,
+    checkAuth,
     fetchUserPermissions,
     checkPermission
   };

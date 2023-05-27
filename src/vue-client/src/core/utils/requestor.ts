@@ -33,8 +33,6 @@ export class requestor {
       params.extraHeaders = [];
     }
 
-    params.extraHeaders = this.pushAuthHeader(params.extraHeaders);
-
     return await this.request<TResponse>(
       input,
       'GET',
@@ -56,7 +54,6 @@ export class requestor {
     }
 
     params.extraHeaders.push({ key: 'Content-type', value: 'application/json' });
-    params.extraHeaders = this.pushAuthHeader(params.extraHeaders);
 
     return await this.request<TResponse>(
       input,
@@ -72,12 +69,19 @@ export class requestor {
     method: MethodType,
     body?: string,
     extraHeaders?: IHeader[],
-    withCredentials: boolean = false
+    withCredentials: boolean = false,
+    canRefreshToken: boolean = true
   ): Promise<TResponse> {
     const headers: Record<string, string> = {};
 
     if (extraHeaders) {
       extraHeaders.forEach(x => (headers[x.key] = x.value));
+    }
+
+    const authStore = useAuthStore();
+    const accessToken = authStore.accessToken;
+    if (accessToken) {
+      headers['AuthToken'] = accessToken;
     }
 
     const params: RequestInit = {
@@ -88,18 +92,9 @@ export class requestor {
     };
 
     const request = new Request(`${this.baseUrl}/${input}`, params);
+    let response: Response | null = null;
     try {
-      const response = await fetch(request);
-
-      if (!response.ok) {
-        if (response.status == 400) {
-          const msg = await response.text();
-          throw new Error(msg);
-        }
-      }
-
-      const data = (await response.json()) as TResponse;
-      return data;
+      response = await fetch(request);
     } catch (error) {
       Notify.create({
         type: 'negative',
@@ -110,15 +105,21 @@ export class requestor {
       });
       throw error;
     }
-  }
 
-  private pushAuthHeader(extraHeaders: IHeader[]): IHeader[] {
-    const userStore = useAuthStore();
-    const token = userStore.token;
-    if (token) {
-      extraHeaders.push({ key: 'AuthToken', value: token });
+    if (!response.ok) {
+      if (response.status == 400) {
+        const msg = await response.text();
+        throw new Error(msg);
+      } else if (response.status == 401 && canRefreshToken) {
+        const userStore = useAuthStore();
+        userStore.checkAuth().then(() => {
+          return this.request<TResponse>(input, method, body, extraHeaders, true, false);
+        });
+      }
     }
-    return extraHeaders;
+
+    const data = (await response.json()) as TResponse;
+    return data;
   }
 }
 
