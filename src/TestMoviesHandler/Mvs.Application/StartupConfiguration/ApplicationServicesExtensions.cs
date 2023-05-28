@@ -16,6 +16,7 @@ public static class ApplicationServicesExtensions
         services.AddScoped<IUsersRepository, UsersRepository>();
 
         services.AddSingleton<ITokenService, TokenService>();
+        services.AddScoped<ICredentialsService, CredentialsService>();
         services.AddScoped<IUsersService, UsersService>();
 
         return services;

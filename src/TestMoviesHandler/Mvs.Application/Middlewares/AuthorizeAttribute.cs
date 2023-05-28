@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Mvs.Domain.Entities;
 
 namespace Mvs.Application.Middlewares;
 
@@ -9,8 +8,8 @@ public class CustomAuthorizeAttribute : Attribute, IAuthorizationFilter
 {
     public void OnAuthorization(AuthorizationFilterContext context)
     {
-        var user = (User)context.HttpContext.Items["User"];
-        if (user == null)
+        var userName = (string?)context.HttpContext.Items["UserName"];
+        if (userName == null)
         {
             context.Result = new JsonResult(new { message = "Unauthorized" }) { StatusCode = StatusCodes.Status401Unauthorized };
         }

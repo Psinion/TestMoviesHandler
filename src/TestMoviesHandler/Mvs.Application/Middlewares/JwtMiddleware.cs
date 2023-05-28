@@ -48,10 +48,9 @@ public class JwtMiddleware
             }, out SecurityToken validatedToken);
 
             var jwtToken = (JwtSecurityToken)validatedToken;
-            var userName = jwtToken.Claims.First(x => x.Type == nameof(User.Username)).Value;
 
-            var user = usersRepository.GetByUsername(userName).Result;
-            context.Items["User"] = user;
+            var userName = jwtToken.Claims.First(x => x.Type == nameof(User.Username)).Value;
+            context.Items["UserName"] = userName;
         }
         catch(Exception ex)
         {

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Mvs.Application.Controllers.Base;
 using Mvs.Application.Middlewares;
 using Mvs.Data.Services;
 using Mvs.Data.Services.Tokens;
@@ -9,12 +8,17 @@ namespace Mvs.Application.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-public class UsersController : ConnectedController
+public class UsersController : ControllerBase
 {
+    private readonly ICredentialsService _credentialsService;
     private readonly IUsersService _usersService;
     private readonly ITokenService _tokenService;
 
-    public UsersController(IHttpContextAccessor httpContextAccessor, IUsersService usersService, ITokenService tokenService) : base(httpContextAccessor)
+    public UsersController(
+          ICredentialsService credentialService
+        , IUsersService usersService
+        , ITokenService tokenService
+        )
     {
         _usersService = usersService;
         _tokenService = tokenService;
@@ -62,9 +66,10 @@ public class UsersController : ConnectedController
     [Route("refresh")]
     public async Task<ActionResult<UserAuthResponseDto?>> Refresh()
     {
+        var currentUser = _credentialsService.CurrentUser;
         var tokensResult = _tokenService.GenerateTokens(new TokenInfo()
             {
-                Username = CurrentUser.Username,
+                Username = currentUser.Username,
             }
         );
 
@@ -83,7 +88,7 @@ public class UsersController : ConnectedController
                 {
                     User = new UserDto()
                     {
-                        Username = CurrentUser.Username
+                        Username = currentUser.Username
                     },
                     Token = success.accessToken
                 };
