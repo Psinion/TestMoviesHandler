@@ -21,7 +21,7 @@ public class Startup
         services.AddSwaggerGen();
 
         services.AddDbContext<MoviesDbContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
+            options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection"))
         );
 
         services.AddCors(options =>

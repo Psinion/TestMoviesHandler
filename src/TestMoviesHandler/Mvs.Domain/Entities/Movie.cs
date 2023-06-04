@@ -6,10 +6,10 @@ namespace Mvs.Domain.Entities;
 
 public class Movie : Entity
 {
-    [Column(TypeName = "nvarchar(50)")]
+    [Column(TypeName = "varchar(50)")]
     public string Title { get; set; }
 
-    [Column(TypeName = "nvarchar(MAX)")]
+    [Column(TypeName = "text")]
     public string Description { get; set; }
 
     public GenreType Genre { get; set; }
