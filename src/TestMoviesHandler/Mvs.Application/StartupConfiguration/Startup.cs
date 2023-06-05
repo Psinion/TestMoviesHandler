@@ -69,6 +69,7 @@ public class Startup
 
         app.UseCors();
 
+        app.UseMiddleware<ErrorHandlerMiddleware>();
         app.UseMiddleware<JwtMiddleware>();
 
         app.UseEndpoints(endpoints =>

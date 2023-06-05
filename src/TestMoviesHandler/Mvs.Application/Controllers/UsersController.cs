@@ -103,6 +103,8 @@ public class UsersController : ControllerBase
     [Route("permissions")]
     public async Task<ActionResult<UserPermissionsResponseDto?>> GetPermissions()
     {
+        throw new Exception("kekeks");
+
         var permissions = new UserPermissionsResponseDto()
         {
             Permissions = new List<string>()

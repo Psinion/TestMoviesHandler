@@ -1,4 +1,5 @@
-﻿using Mvs.Data.Access.EF.Repositories;
+﻿using Mvs.Application.Middlewares;
+using Mvs.Data.Access.EF.Repositories;
 using Mvs.Data.Repositories;
 using Mvs.Data.Services;
 using Mvs.Logic.Services;
@@ -9,6 +10,8 @@ public static class ApplicationServicesExtensions
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)
     {
+        services.AddTransient<ErrorHandlerMiddleware>();
+
         services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
         services.AddScoped<IActorsRepository, ActorsRepository>();
