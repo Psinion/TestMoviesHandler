@@ -115,6 +115,8 @@ export class requestor {
         userStore.checkAuth().then(() => {
           return this.request<TResponse>(input, method, body, extraHeaders, true, false);
         });
+      } else if (response.status == 500) {
+        throw new Error('Ошибка сервера');
       }
     }
 

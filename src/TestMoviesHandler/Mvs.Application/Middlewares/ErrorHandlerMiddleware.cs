@@ -1,4 +1,7 @@
-﻿namespace Mvs.Application.Middlewares;
+﻿using System.Text;
+using System.Text.Json;
+
+namespace Mvs.Application.Middlewares;
 
 public class ErrorHandlerMiddleware : IMiddleware
 {
@@ -17,11 +20,29 @@ public class ErrorHandlerMiddleware : IMiddleware
         }
         catch (Exception exception)
         {
-            const string message = "An unhandled exception has occurred while executing the request.";
-            _logger.LogError(exception, message);
-
-            context.Response.Clear();
-            context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+            await HandleExceptionAsync(context, exception, _logger);
         }
+    }
+
+
+    private static Task HandleExceptionAsync(HttpContext context, Exception exception, ILogger logger)
+    {
+        var builder = new StringBuilder();
+
+        var message = exception.Message;
+        var errorGuid = Guid.NewGuid();
+
+        builder.AppendLine($"Error Guid: {errorGuid}");
+        builder.AppendLine($"Date: {DateTime.Now}");
+        builder.AppendLine($"Message: {message}");
+
+        logger.LogError(exception, builder.ToString());
+
+        context.Response.Clear();
+        context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+
+        var result = JsonSerializer.Serialize(new { error = message, guid = errorGuid });
+        context.Response.ContentType = "application/json";
+        return context.Response.WriteAsync(result);
     }
 }
