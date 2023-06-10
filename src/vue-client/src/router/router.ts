@@ -5,12 +5,12 @@ const routes = [
   {
     path: '/',
     name: RoutesNames.MainLayout,
-    component: () => import('@/core/layouts/MainLayout.vue'),
+    component: () => import('@/layouts/MainLayout.vue'),
     children: [
       {
         path: '',
         name: RoutesNames.Index,
-        component: () => import('@/core/views/IndexView.vue'),
+        component: () => import('@/views/IndexView.vue'),
         meta: {
           title: 'Основная страница',
           permissions: [Permissions.LoggedIn]
@@ -19,7 +19,7 @@ const routes = [
       {
         path: '/error',
         name: RoutesNames.Error,
-        component: () => import('@/core/views/ErrorView.vue'),
+        component: () => import('@/views/ErrorView.vue'),
         meta: {
           title: 'Ошибка',
           permissions: [Permissions.LoggedIn]
@@ -38,7 +38,7 @@ const routes = [
   {
     path: '/',
     name: 'BlankLayout',
-    component: () => import('@/core/layouts/BlankLayout.vue'),
+    component: () => import('@/layouts/BlankLayout.vue'),
     children: []
   },
   {

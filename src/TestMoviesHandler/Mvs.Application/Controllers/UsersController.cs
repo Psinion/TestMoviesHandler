@@ -20,6 +20,7 @@ public class UsersController : ControllerBase
         , ITokenService tokenService
         )
     {
+        _credentialsService = credentialService;
         _usersService = usersService;
         _tokenService = tokenService;
     }
@@ -37,6 +38,7 @@ public class UsersController : ControllerBase
 
         var tokensResult = _tokenService.GenerateTokens(new TokenInfo()
             {
+                Id = response.User.Id,
                 Username = response.User.Username,
             },
             authRequest.RememberMe
@@ -69,6 +71,7 @@ public class UsersController : ControllerBase
         var currentUser = _credentialsService.CurrentUser;
         var tokensResult = _tokenService.GenerateTokens(new TokenInfo()
             {
+                Id = currentUser.Id,
                 Username = currentUser.Username,
             }
         );

@@ -29,7 +29,7 @@
 </template>
 
 <script lang="ts">
-import { useAuthStore } from '../../modules/auth/authStore';
+import { useAuthStore } from '../modules/auth/authStore';
 import { storeToRefs } from 'pinia';
 
 export default {

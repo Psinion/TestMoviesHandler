@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using Mvs.Data.Repositories;
+﻿using Mvs.Data.Repositories;
 using Mvs.Data.Services;
 using Mvs.Domain.DTOs;
 
@@ -27,6 +26,7 @@ public class UsersService : IUsersService
         {
             User = new UserDto()
             {
+                Id = user.Id,
                 Username = user.Username
             }
         };

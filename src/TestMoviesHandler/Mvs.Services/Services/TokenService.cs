@@ -46,7 +46,8 @@ public class TokenService : ITokenService
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(nameof(User.Username), tokenInfo.Username)
+                new Claim(nameof(User.Id), tokenInfo.Id.ToString()),
+                new Claim(nameof(User.Username), tokenInfo.Username),
             }),
 
             Expires = now.AddMinutes(Convert.ToInt32(expireMinutes)),

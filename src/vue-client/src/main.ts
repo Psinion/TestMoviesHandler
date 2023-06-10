@@ -6,7 +6,7 @@ import router from './router/index';
 import mainConfig from './main.config';
 import { createPinia } from 'pinia';
 
-import '@/core/styles/main.scss';
+import '@/styles/main.scss';
 
 // Devextreme themes
 import 'devextreme/dist/css/dx.light.css';

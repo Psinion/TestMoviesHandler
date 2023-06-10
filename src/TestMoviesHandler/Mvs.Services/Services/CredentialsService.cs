@@ -10,10 +10,11 @@ public class CredentialsService : ICredentialsService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IUsersRepository _usersRepository;
 
+    public int UserId { get; }
     public string UserName { get; }
 
     private User? _currentUser;
-    public User CurrentUser => _currentUser ??= _usersRepository.GetByUsername(UserName).Result 
+    public User CurrentUser => _currentUser ??= _usersRepository.FindByIdAsync(UserId).Result 
                                                 ?? throw new NullReferenceException("User not found");
 
     public CredentialsService(IHttpContextAccessor httpContextAccessor, IUsersRepository usersRepository)
@@ -21,6 +22,7 @@ public class CredentialsService : ICredentialsService
         _httpContextAccessor = httpContextAccessor;
         _usersRepository = usersRepository;
 
-        UserName = (string?)httpContextAccessor.HttpContext?.Items["UserName"] ?? "";
+        UserId = (int?)httpContextAccessor.HttpContext?.Items[nameof(User.Id)] ?? -1;
+        UserName = (string?)httpContextAccessor.HttpContext?.Items[nameof(User.Username)] ?? "";
     }
 }

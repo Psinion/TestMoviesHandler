@@ -41,7 +41,12 @@ public class ErrorHandlerMiddleware : IMiddleware
         context.Response.Clear();
         context.Response.StatusCode = StatusCodes.Status500InternalServerError;
 
-        var result = JsonSerializer.Serialize(new { error = message, guid = errorGuid });
+        var result = JsonSerializer.Serialize(new
+        {
+            status = StatusCodes.Status500InternalServerError,
+            guid = errorGuid,
+            detail = message,
+        });
         context.Response.ContentType = "application/json";
         return context.Response.WriteAsync(result);
     }
