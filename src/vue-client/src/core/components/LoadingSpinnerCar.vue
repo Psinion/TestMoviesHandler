@@ -1,7 +1,11 @@
 <template>
   <div class="spin">
     <div class="ring">
-      <img id="pot" width="750" :src="hopper" />
+      <div id="pot">
+        <img width="250" :src="hopper" />
+        <img width="250" :src="hopper" />
+        <img width="250" :src="hopper" />
+      </div>
     </div>
   </div>
 </template>
@@ -23,14 +27,16 @@
   overflow: hidden;
   width: 300px;
   height: 150px;
-  border: solid $secondary 2px;
-  background-color: $primary;
-  box-shadow: 0px 0px 44px 30px rgba(0, 0, 0, 0.6);
+  border-bottom: solid black 2px;
+  //border: solid $secondary 2px;
+  background-color: $secondary;
+  //box-shadow: 0px 0px 44px 30px rgba(0, 0, 0, 0.6);
 }
 
 #pot {
+  display: flex;
   position: relative;
-  bottom: 55px;
+  bottom: 52px;
   animation: train-shift 3s linear infinite forwards;
 }
 @keyframes train-shift {
@@ -44,5 +50,5 @@
 </style>
 
 <script setup lang="ts">
-import hopper from '/assets/hopper.svg';
+import hopper from '/assets/hopper-car.svg';
 </script>

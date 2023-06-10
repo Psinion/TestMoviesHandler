@@ -1,0 +1,33 @@
+<svg width="500" height="400" xmlns="http://www.w3.org/2000/svg">
+ <g>
+  <title>background</title>
+  <rect fill="none" id="canvas_background" height="402" width="502" y="-1" x="-1"/>
+ </g>
+
+ <g>
+  <title>Layer 1</title>
+  <path id="svg_6" d="m138.39295,163.16538l0.43641,-0.43641l0.61718,0l0.43641,0.43641l0,0.61718l-0.43641,0.43641l-0.61718,0l-0.43641,-0.43641l0,-0.61718z" stroke-width="0" stroke="#000" fill="#E6C36A"/>
+  <path id="svg_9" d="m176.53463,-60.70962l0.43641,-0.43641l0.61718,0l0.43641,0.43641l0,0.61718l-0.43641,0.43641l-0.61718,0l-0.43641,-0.43641l0,-0.61718z" stroke-width="0" stroke="#000" fill="#E6C36A"/>
+  <g id="svg_82">
+   <ellipse fill="#666666" stroke="#000" stroke-width="0" cx="249.795234" cy="220.43334" id="svg_59" rx="238.500011" ry="53.5"/>
+   <g id="svg_81">
+    <rect fill="#444444" stroke="#000" stroke-width="0" x="486.363636" y="327" width="15.2857" height="15" id="svg_69"/>
+    <rect x="-1.818182" fill="#444444" stroke="#000" stroke-width="0" y="327" width="15.2857" height="15" id="svg_70"/>
+    <g id="svg_80">
+     <g id="svg_74">
+      <ellipse ry="32" rx="32" id="svg_71" cy="368.33332" cx="48.33331" stroke-width="0" stroke="#999999" fill="#666666"/>
+      <ellipse ry="32" rx="32" id="svg_72" cy="368.66667" cx="143.33331" stroke-width="0" stroke="#999999" fill="#666666"/>
+      <path transform="rotate(180, 95, 356.667)" id="svg_73" d="m15,376.66666l30,-40l100.00001,0l29.99999,40l-160,0z" stroke-width="0" stroke="#444444" fill="#444444"/>
+     </g>
+     <g id="svg_78">
+      <ellipse ry="32" rx="32" id="svg_75" cy="368.66527" cx="358.33332" stroke-width="0" stroke="#999999" fill="#666666"/>
+      <ellipse ry="32" rx="32" id="svg_76" cy="368.99861" cx="453.33332" stroke-width="0" stroke="#999999" fill="#666666"/>
+      <path transform="rotate(180, 405, 356.999)" id="svg_77" d="m325.00001,376.9986l30,-40l100.00001,0l29.99999,40l-160,0z" stroke-width="0" stroke="#444444" fill="#444444"/>
+     </g>
+     <rect stroke-width="0" id="svg_79" height="30" width="480" y="320" x="10" stroke="#000" fill="#444444"/>
+    </g>
+   </g>
+   <rect id="svg_1" height="108" width="480" y="212" x="10" stroke-opacity="null" stroke-width="0" stroke="#000" fill="#999999"/>
+  </g>
+ </g>
+</svg>

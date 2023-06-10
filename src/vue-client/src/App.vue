@@ -1,12 +1,12 @@
 <template>
-  <loading-spinner />
+  <loading-spinner-car />
   <router-view />
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from './modules/auth/authStore';
-import LoadingSpinner from './core/components/LoadingSpinner.vue';
-import { onBeforeMount } from 'vue';
+import LoadingSpinnerCar from './core/components/LoadingSpinnerCar.vue';
+import { onBeforeMount, computed, ref } from 'vue';
 
 onBeforeMount(async () => {
   const authStore = useAuthStore();
